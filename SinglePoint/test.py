@@ -43,3 +43,28 @@ print("Med:", med)
 print("DS:", math.sqrt(sum([(res - med)**2 for res in hc_results])/executions))
 print("Max:", hc_results[-1])
 print("Min:", hc_results[0])
+print(hc_candidates[min_hc_index])
+
+print("HCP")
+av = sum(hcp_results)/executions
+print("Av:", av)
+print("DS:", math.sqrt(sum([(res - av)**2 for res in hcp_results])/executions))
+hcp_results.sort()
+med = hcp_results[int(executions/2)]
+print("Med:", med)
+print("DS:", math.sqrt(sum([(res - med)**2 for res in hcp_results])/executions))
+print("Max:", hcp_results[-1])
+print("Min:", hcp_results[0])
+print(hcp_candidates[min_hcp_index])
+
+print("ST")
+av = sum(st_results)/executions
+print("Av:", av)
+print("DS:", math.sqrt(sum([(res - av)**2 for res in st_results])/executions))
+st_results.sort()
+med = st_results[int(executions/2)]
+print("Med:", med)
+print("DS:", math.sqrt(sum([(res - med)**2 for res in st_results])/executions))
+print("Max:", st_results[-1])
+print("Min:", st_results[0])
+print(st_candidates[min_st_index])
