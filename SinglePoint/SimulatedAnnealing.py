@@ -1,7 +1,7 @@
 from random import random
 from SinglePointAlgorithm import SinglePointAlgorithm
 
-class SimulatedTempering(SinglePointAlgorithm):
+class SimulatedAnnealing(SinglePointAlgorithm):
   @staticmethod
   def st_descendant(vector, function):
     return [component + (random()*2) - 1 for component in vector]
@@ -15,11 +15,6 @@ class SimulatedTempering(SinglePointAlgorithm):
       return x
     return y
 
-  def __init__(self, dim, function, stop, init_temp=1):
-    self.dim = dim
-    self.function = function
-    self.stop = stop
+  def __init__(self, dim, function, stop, init_temp = 1):
+    super().__init__(dim, function, SimulatedAnnealing.st_descendant, self.replacement, stop)
     self.temp = init_temp
-    self.descendant = SimulatedTempering.st_descendant
-    self.replacement = self.st_replacement
-    SinglePointAlgorithm(dim, function, self.descendant, self.replacement, stop)

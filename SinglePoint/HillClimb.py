@@ -14,9 +14,4 @@ class HillClimb(SinglePointAlgorithm):
     return y
 
   def __init__(self, dim, function, stop):
-    self.dim = dim
-    self.function = function
-    self.stop = stop
-    self.descendant = HillClimb.hc_descendant
-    self.replacement = HillClimb.hc_replacement
-    SinglePointAlgorithm(dim, function, self.descendant, self.replacement, stop)
+    super().__init__(dim, function, HillClimb.hc_descendant, HillClimb.hc_replacement, stop)

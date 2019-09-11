@@ -1,7 +1,7 @@
 import math
 from HillClimb import HillClimb
 from ParallelHC import ParallelHC
-from SimulatedTempering import SimulatedTempering
+from SimulatedAnnealing import SimulatedAnnealing
 
 executions = 100
 iterations = 1e+5
@@ -13,7 +13,7 @@ stopp = lambda k, vector, function: k >= iterations/theads
 
 hc  = HillClimb(1, function, stop)
 hcp = ParallelHC(theads, 1, function, stopp)
-st  = SimulatedTempering(1, function, stop)
+st  = SimulatedAnnealing(1, function, stop)
 
 hc_candidates  = []
 hcp_candidates = []
