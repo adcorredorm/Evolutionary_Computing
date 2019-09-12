@@ -4,16 +4,30 @@ from ParallelHC import ParallelHC
 from SimulatedAnnealing import SimulatedAnnealing
 
 executions = 100
-iterations = 1e+5
+iterations = 1e+3
 theads = 50
 
-function = lambda x: 4*(x[0]**4) - 10*x[0] - 2
+def ackley(x, a=20, b=0.2, c=2*math.pi):
+  p1 = -a*math.exp(-b*math.sqrt(sum([i**2 for i in x])/len(x)))
+  p2 = -math.exp(sum([math.cos(c*i) for i in x])/len(x))
+  return p1 + p2 + a + math.exp(1)
+
+def rastrigin(x):
+  return 10*len(x) + sum([i**2 - 10*math.cos(2*math.pi*i) for i in x])
+
+def michalewicz(x, m=10):
+  res = 0
+  for i in range(len(x)):
+    res += math.sin(x[i]) * (math.sin((i*x[i]**2)/math.pi))**(2*m)
+  return - res
+
+function = michalewicz
 stop = lambda k, vector, function: k >= iterations
 stopp = lambda k, vector, function: k >= iterations/theads
 
-hc  = HillClimb(1, function, stop)
-hcp = ParallelHC(theads, 1, function, stopp)
-st  = SimulatedAnnealing(1, function, stop)
+hc  = HillClimb(10, function, stop)
+hcp = ParallelHC(theads, 10, function, stopp)
+st  = SimulatedAnnealing(10, function, stop)
 
 hc_candidates  = []
 hcp_candidates = []

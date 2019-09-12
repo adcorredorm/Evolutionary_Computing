@@ -16,5 +16,5 @@ class SimulatedAnnealing(SinglePointAlgorithm):
     return y
 
   def __init__(self, dim, function, stop, init_temp = 1):
-    super().__init__(dim, function, SimulatedAnnealing.st_descendant, self.replacement, stop)
+    super().__init__(dim, function, SimulatedAnnealing.st_descendant, self.st_replacement, stop)
     self.temp = init_temp
