@@ -28,7 +28,7 @@ for i in range(executions):
   hc_candidates.append(hc.execute(_min, _max))
   hcp_candidates.append(hcp.execute(_min, _max))
   st_candidates.append(st.execute(_min, _max))
-  print((i+1)+'%')
+  print('{}/{}'.format(i+1, executions))
 
 hc_results  = [function(cand) for cand in hc_candidates]
 hcp_results = [function(cand) for cand in hcp_candidates]
@@ -51,7 +51,7 @@ st_results.sort()
 st_med = st_results[int(executions/2)]
 
 name = function.__name__
-file = open(name + '_results.txt', 'w+')
+file = open('results/' + name + '_results.txt', 'w+')
 
 file.write('Params:\n\tFunction: {}\n\tDimension: {:.0f}\n\tIterations: {:.0f}\n\tExecutions: {:.0f}\n\n'.format(
   name, dim, iterations, executions
@@ -64,18 +64,18 @@ file.write('Hill Climb   \t{:0.4f} ± {:0.4f}\t{:0.4f} ± {:0.4f}\t{:0.4f}\t{:0.
   hc_results[int(executions/2)], math.sqrt(sum([(res - hc_med)**2 for res in hc_results])/executions),
   hc_results[-1], hc_results[0]
 ))
-file.write(str(['{:0.4f}'.format(i) for i in hc_candidates[min_hc_index]]) + '\n')
+file.write(str(['{:0.6f}'.format(i) for i in hc_candidates[min_hc_index]]) + '\n')
 
 file.write('Parallel HC  \t {:0.4f} ± {:0.4f} \t {:0.4f} ± {:0.4f} \t{:0.4f}\t{:0.4f}\t'.format(
   hcp_av, math.sqrt(sum([(res - hcp_av)**2 for res in hcp_results])/executions),
   hcp_results[int(executions/2)], math.sqrt(sum([(res - hcp_med)**2 for res in hcp_results])/executions),
   hcp_results[-1], hcp_results[0]
 ))
-file.write(str(['{:0.4f}'.format(i) for i in hcp_candidates[min_hcp_index]]) + '\n')
+file.write(str(['{:0.6f}'.format(i) for i in hcp_candidates[min_hcp_index]]) + '\n')
 
 file.write('Sim. Anneling\t{:0.4f} ± {:0.4f}\t{:0.4f} ± {:0.4f}\t{:0.4f}\t{:0.4f}\t'.format(
   st_av, math.sqrt(sum([(res - st_av)**2 for res in st_results])/executions),
   st_results[int(executions/2)], math.sqrt(sum([(res - st_med)**2 for res in st_results])/executions),
   st_results[-1], st_results[0]
 ))
-file.write(str(['{:0.4f}'.format(i) for i in st_candidates[min_st_index]]) + '\n')
+file.write(str(['{:0.6f}'.format(i) for i in st_candidates[min_st_index]]) + '\n')
