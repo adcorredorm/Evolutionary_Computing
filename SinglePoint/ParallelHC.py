@@ -9,8 +9,8 @@ class ParallelHC:
     self.obj = HillClimb(dim, function, stop)
     self.pool = ThreadPool(processes = threads)
 
-  def execute(self):
-    execution = [self.pool.apply_async(self.obj.execute) for i in range(self.threads)]
+  def execute(self, _min = 0, _max = 1):
+    execution = [self.pool.apply_async(self.obj.execute, args=(_min, _max)) for i in range(self.threads)]
     results = [res.get() for res in execution]
     return ParallelHC.find_min(results, self.function)
 
