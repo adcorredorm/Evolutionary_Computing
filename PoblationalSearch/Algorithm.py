@@ -16,23 +16,20 @@ class PoblationalAlgorithm(metaclass=ABCMeta):
     pass
 
   def select(self, population):
-    best = population[0]
-    for ind in population[1:]:
-      if ind < best:
-        best = ind
-    return best
+    return min(population)
 
   def __init__(self, function):
     self.function = function
 
   def execute(self, p_size):
     k = 0
+    stats = []
     population = self.init_population(p_size)
     while not self.stop(population, k):
-      print(k, self.select(population))
       population = self.grow(population, k)
+      stats.append(self.select(population).fitness)
       k += 1
-    return self.select(population)
+    return (self.select(population), stats)
 
 
 class GeneticAlgorithm(PoblationalAlgorithm):

@@ -1,6 +1,8 @@
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 from Agents.RealAgent import RealAgent
-from random import random, randint, shuffle
+from random import random, randint, shuffle, sample
 from Algorithm import GeneticAlgorithm
 
 class RealGA(GeneticAlgorithm):
@@ -21,8 +23,10 @@ class RealGA(GeneticAlgorithm):
     return population
 
   def select_parents(self, population):
-    shuffle(population)
-    return population
+    cand = []
+    for _ in range(len(population)):
+      cand.append(min(sample(population, 4)))
+    return cand
 
   def descendant(self, population, parents):
     childs = []
@@ -46,12 +50,33 @@ class RealGA(GeneticAlgorithm):
     for i in range(len(parents)):
       if childs[i] <= parents[i]: pop.append(childs[i])
       else: pop.append(parents[i])
-    return pop
+    return childs
 
 def ackley(x, a=20, b=0.2, c=2*math.pi):
   p1 = -a*math.exp(-b*math.sqrt(sum([i**2 for i in x])/len(x)))
   p2 = -math.exp(sum([math.cos(c*i) for i in x])/len(x))
   return p1 + p2 + a + math.exp(1)
 
-best = RealGA(ackley, 10, 100, 0.7, -32.768, 32.768).execute(500)
-print(best)
+alg = RealGA(ackley, 10, 100, 0.7, -32.768, 32.768)
+pop = []
+for _ in range(1):
+  pop.append(alg.execute(100)[1])
+
+_min = []
+_max = []
+avg = []
+median = []
+
+pop = np.transpose(pop)
+for gen in pop:
+  _min.append(min(gen))
+  _max.append(max(gen))
+  avg.append(np.average(gen))
+  median.append(np.median(gen))
+
+plt.plot(_min)
+plt.plot(_max)
+plt.plot(avg)
+plt.plot(median)
+
+plt.show()
