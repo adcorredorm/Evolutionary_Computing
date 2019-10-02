@@ -8,63 +8,57 @@ class PoblationalAlgorithm(metaclass=ABCMeta):
     pass
 
   @abstractmethod
-  def stop(self, population, k, function):
+  def stop(self, population, k):
     pass
 
   @abstractmethod
-  def grow(self, population, k, function):
+  def grow(self, population, k):
     pass
 
-  @abstractmethod
-  def select(self, population, function):
-    pass
+  def select(self, population):
+    best = population[0]
+    for ind in population[1:]:
+      if ind < best:
+        best = ind
+    return best
 
-  def __init__(self, p_size, function):
-    self.p_size = p_size
+  def __init__(self, function):
     self.function = function
 
-  def execute(self):
+  def execute(self, p_size):
     k = 0
-    population = self.init_population(self.p_size)
-    while not self.stop(population, k, self.function):
-      population = self.grow(population, k, self.function)
+    population = self.init_population(p_size)
+    while not self.stop(population, k):
+      population = self.grow(population, k)
       k += 1
-    return self.select(population, self.function)
+      print(self.select(population))
+    return self.select(population)
 
 
 class GeneticAlgorithm(PoblationalAlgorithm):
 
   @abstractmethod
-  def select_parents(self, population, function):
+  def select_parents(self, population):
     pass
 
   @abstractmethod
-  def descendant(self, population, parents, function):
+  def descendant(self, population, parents):
     pass
 
   @abstractmethod
-  def replace(self, population, parents, childs, function):
+  def replace(self, population, parents, childs):
     pass
 
-  def __init__(self, p_size, function, ind_size, generations):
-    super().__init__(p_size, function)
+  def __init__(self, function, ind_size, generations):
+    super().__init__(function)
     self.ind_size = ind_size
     self.generations = generations
   
-  def stop(self, population, k, function):
+  def stop(self, population, k):
     return k > self.generations
 
-  def grow(self, population, k, function):
-    parents = self.select_parents(population, function)
-    childs = self.descendant(population, parents, function)
-    return self.replace(population, parents, childs, function)
+  def grow(self, population, k):
+    parents = self.select_parents(population)
+    childs = self.descendant(population, parents)
+    return self.replace(population, parents, childs)
   
-  def select(self, population, function):
-    index = 0
-    value = function(population[0])
-    for i in range(1, len(population)):
-      v_aux = function(population[i])
-      if v_aux < value:
-        index = i
-        value = v_aux
-    return population[index]
