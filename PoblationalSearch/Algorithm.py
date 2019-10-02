@@ -29,9 +29,9 @@ class PoblationalAlgorithm(metaclass=ABCMeta):
     k = 0
     population = self.init_population(p_size)
     while not self.stop(population, k):
+      print(k, self.select(population))
       population = self.grow(population, k)
       k += 1
-      print(self.select(population))
     return self.select(population)
 
 
@@ -55,7 +55,7 @@ class GeneticAlgorithm(PoblationalAlgorithm):
     self.generations = generations
   
   def stop(self, population, k):
-    return k > self.generations
+    return self.generations <= k
 
   def grow(self, population, k):
     parents = self.select_parents(population)
