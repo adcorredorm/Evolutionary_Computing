@@ -1,4 +1,3 @@
-from random import random
 from abc import abstractmethod, ABCMeta
 
 class PoblationalAlgorithm(metaclass=ABCMeta):
@@ -18,8 +17,9 @@ class PoblationalAlgorithm(metaclass=ABCMeta):
   def select(self, population):
     return min(population)
 
-  def __init__(self, function):
+  def __init__(self, function, **kwargs):
     self.function = function
+    self.__dict__.update(kwargs)
 
   def execute(self, p_size):
     k = 0
@@ -30,32 +30,3 @@ class PoblationalAlgorithm(metaclass=ABCMeta):
       stats.append(self.select(population).fitness)
       k += 1
     return (self.select(population), stats)
-
-
-class GeneticAlgorithm(PoblationalAlgorithm):
-
-  @abstractmethod
-  def select_parents(self, population):
-    pass
-
-  @abstractmethod
-  def descendant(self, population, parents):
-    pass
-
-  @abstractmethod
-  def replace(self, population, parents, childs):
-    pass
-
-  def __init__(self, function, ind_size, generations):
-    super().__init__(function)
-    self.ind_size = ind_size
-    self.generations = generations
-  
-  def stop(self, population, k):
-    return self.generations <= k
-
-  def grow(self, population, k):
-    parents = self.select_parents(population)
-    childs = self.descendant(population, parents)
-    return self.replace(population, parents, childs)
-  
