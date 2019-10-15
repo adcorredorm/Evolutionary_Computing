@@ -1,6 +1,8 @@
 from random import random, shuffle, sample, randint
 from Algorithm import PoblationalAlgorithm
 from Agents.RealAgent import RealAgent
+from numpy.random import dirichlet
+from numpy import zeros, ones
 
 class EvolutionStrategie(PoblationalAlgorithm):
 
@@ -25,7 +27,16 @@ class EvolutionStrategie(PoblationalAlgorithm):
     return sample(population, size)
 
   def recombination(self, parents):
-    pass
+    alpha = dirichlet(ones(len(parents)), 1)[0]
+    gen = zeros(self.ind_size)
+    exo = zeros(self.ind_size)
+    for i in range(self.ind_size):
+      gen[i] = sum([alpha[j] * parents[j].genome[i] for j in len(parents)])
+    for i in range(len(exo)):
+      exo[i] = sum([alpha[j] * parents[j].exogenous[i] for j in len(parents)])
+    agent = RealAgent(genome=gen, exogenous=exo)
+    agent.evaluate(self.function)
+    return agent
 
   def grow(self, population, k):
     for _ in range(len(population)):
