@@ -3,11 +3,12 @@ from Algorithm import PoblationalAlgorithm
 from Agents.RealAgent import RealAgent
 from numpy.random import dirichlet
 from numpy import zeros, ones
+import Functions.Real as func
 
 class EvolutionStrategie(PoblationalAlgorithm):
 
   def __init__(self, function, ind_size, generations, **kwargs):
-    super.__init__(function, kwargs)
+    super().__init__(function, **kwargs)
     self.generations = generations
     self.ind_size = ind_size
 
@@ -31,9 +32,9 @@ class EvolutionStrategie(PoblationalAlgorithm):
     gen = zeros(self.ind_size)
     exo = zeros(self.ind_size)
     for i in range(self.ind_size):
-      gen[i] = sum([alpha[j] * parents[j].genome[i] for j in len(parents)])
+      gen[i] = sum([alpha[j] * parents[j].genome[i] for j in range(len(parents))])
     for i in range(len(exo)):
-      exo[i] = sum([alpha[j] * parents[j].exogenous[i] for j in len(parents)])
+      exo[i] = sum([alpha[j] * parents[j].exogenous[i] for j in range(len(parents))])
     agent = RealAgent(genome=gen, exogenous=exo)
     agent.evaluate(self.function)
     return agent
@@ -46,3 +47,6 @@ class EvolutionStrategie(PoblationalAlgorithm):
       population.append(ind)
     return population
     
+if __name__ == '__main__':
+  best = EvolutionStrategie(func.ackley, 5, 100).execute(100)[0]
+  print(best)
