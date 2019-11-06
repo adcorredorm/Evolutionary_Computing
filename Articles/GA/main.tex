@@ -1,0 +1,57 @@
+\documentclass[twocolumn]{IEEEtran}
+
+\begin{document}
+\title{Evolutionary Aproach to Traveling Salesman Problem}
+\author{Angel David Corredor}
+\date{}
+\maketitle
+
+\begin{abstract}
+    The paper presents a technique for solve the Traveling Salesman Problem using a modified Genetic Algorithm.
+    Then the experiments will be compared with traditional GA in some problems of TSPLibrary.     
+\end{abstract}
+
+\section{Introduction}
+
+The travelling salesman problem is one of the classic NP-hard optimization problems.
+In this problem, there are $n$ cities and the distances between the cities are given by a 
+distance matrix $D=d_{ij}$ ($d_{ij}$ the distance between city $i$ and $j$).
+There is a salesman who must visit each city exactly once and minimize the time of the complete tour.
+It is assumed that the speed of the salesman is constant ($v_c$) and he tries to minimize
+the time of the tour. 
+The objective function is given by:
+
+\begin{equation}
+    f(\bar{x}) =
+    \sum_{i=1}^{n-1} (t_{x_i,x_{i+1}})
+    + t_{x_n,x_1},
+    \bar{x}=(x_1,...,x_n)
+\end{equation}
+
+where $\bar{x}$ represents a tour, which contains all of the cities exactly once, 
+$t_{x_i,x_{i+1}}$ is the time of the travel between $x_i$ and $x_{i+1}$ and it is calculated by:
+
+\begin{equation}
+    t_{x_i,x_{i+1}} =
+    \frac{d_{x_i,x_{i+1}}}{v_c}
+\end{equation}
+
+Clearly, $f$ is the total time of the tour. The aim is to find $x$ which minimizes $f$. 
+
+\section{INdividual representation}
+
+The encoding of each individual is a permutation of $n$ elements called tour,
+this represents the order in which the traveler visit the cities.
+
+\section{Conclutions}
+
+%\begin{thebibliography}{X}
+    %Main https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf (este da una proposicion mejor de multiobjetivo)
+    
+    %%Instancias del problema https://cs.adelaide.edu.au/~optlog/CEC2014COMP_InstancesNew/
+    %%Benchmark https://cs.adelaide.edu.au/~ec/research/ttp/2014gecco-ttp.pdf
+    %%BO-TTP https://cs.adelaide.edu.au/~markus/pub/2018gecco-emottp.pdf
+    %%Mas cosas https://cs.adelaide.edu.au/~ec/research/combinatorial.php   
+%\end{thebibliography}
+
+\end{document}
