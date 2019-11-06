@@ -92,6 +92,23 @@ new parameters are added to interconnect two sub-problems:
     that the thief travels in $v_{max}$ when the knapsack is empty
     ($W_c=0$) and in $v_min$ when the knapsack is full ($W_c=W$).
 
+    The thief has rented the knapsack and he has to pay the rent. 
+    The knapsack’s rent rate is $\$R$ per time unit.
+    The aim of $TTP_2$ is to maximize the following function:
+
+    \begin{equation}
+        G(x,z) = g(z) - R*f(x,z)
+    \end{equation}
+
+    where $g$ is the total value of all picked items, $R$ is the rent
+    per time unit, and $f$ is the total time of the tour. $x$ and $z$ are the
+    tour and the picking plan (the solutions of TSP and KP subproblems), respectively.
+    Note that the travel time and weight of the picked items have been connected through the changes
+    of the speed of travel. Thus, the function $f$ needs to get both $x$
+    and $z$ as inputs to calculate the total time. Also, the total value
+    of the picked items has been connected to the travel time by
+    the rent rate.
+
     \item The value of the picked items drops by time.
     In fact, the final value of the item at the end of the travel is not the
     same as its value when the thief picked the item. This
