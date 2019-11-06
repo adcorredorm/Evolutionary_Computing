@@ -1,0 +1,162 @@
+\documentclass[twocolumn]{IEEEtran}
+
+\begin{document}
+\title{Coevolutionary Aproach to Biobjective Traveling Thief Problem}
+\author{Angel David Corredor}
+\date{}
+\maketitle
+
+\begin{abstract}
+    The paper presents a technique for solve the Biobjective Traveling Thief Problem using a Coevolutionary approach.
+    There are 2 different populations that resolves separately the subproblems of TTP but work together
+    to solve BO-TTP using the friend concept. Finally experiments will be presented using TTP benchmark.  
+\end{abstract}
+
+\section{Introduction}
+
+The problem is a combination of two well-known optimization problems (TSP and KP).
+Two models of TTP are introduced and their characteristics are investigated. 
+These two models are different from each other based on the way in which the sub-problems are
+interdependent. It is shown that solving each sub-problem in isolation is not effective and the 
+two sub-problems have to be considered together.
+
+\subsection{Traveling Salesman Problem}
+
+The travelling salesman problem is one of the classic NP-hard optimization problems.
+In this problem, there are $n$ cities and the distances between the cities are given by a 
+distance matrix $D=d_{ij}$ ($d_{ij}$ the distance between city $i$ and $j$).
+There is a salesman who must visit each city exactly once and minimize the time of the complete tour.
+It is assumed that the speed of the salesman is constant ($v_c$) and he tries to minimize
+the time of the tour. 
+The objective function is given by:
+
+\begin{equation}
+    f(\bar{x}) =
+    \sum_{i=1}^{n-1} (t_{x_i,x_{i+1}})
+    + t_{x_n,x_1},
+    \bar{x}=(x_1,...,x_n)
+\end{equation}
+
+where $\bar{x}$ represents a tour, which contains all of the cities exactly once, 
+$t_{x_i,x_{i+1}}$ is the time of the travel between $x_i$ and $x_{i+1}$ and it is calculated by:
+
+\begin{equation}
+    t_{x_i,x_{i+1}} =
+    \frac{d_{x_i,x_{i+1}}}{v_c}
+\end{equation}
+
+Clearly, $f$ is the total time of the tour. The aim is to find $x$ which minimizes $f$. 
+
+\subsection{Knapsack Problem}
+
+The knapsack problem is another NP-hard optimization problem. 
+In this problem, there are $m$ items $I_1, ..., I_m$, each of
+which has a value ($p_i$) and a weight ($w_i$).
+Also, there is a thief who wants to fill his knapsack by taking some of these items.
+The capacity of the knapsack is limited ($W$).
+The aim of the thief is to pick the items to maximize their total value while
+their total weight does not exceed the knapsack capacity.
+The problem is modelled as follows:
+
+\begin{equation}
+    maximize \; g(\bar{y}) =
+    \sum_{i=1}^m p_iy_i, 
+    \bar{y} = (y_1, ..., y_m)
+\end{equation}
+
+\begin{equation}
+    subject \; to
+    \sum_{i=1}^m w_iy_i \leq W
+\end{equation}
+
+where $y_i \in \{0,1\}$ and $y_i = 1$ indicates picking item $i$ and
+$g(y)$ is the total value of the picked items. The aim is to
+maximize $g$ in a way that the total weight of the items does not
+exceed the capacity of the knapsack. 
+
+\subsection{Treveling Thief Problem}
+In $TTP_2$  there are two objectives, namely maximizing the
+total value while minimizing the travel time. However, three
+new parameters are added to interconnect two sub-problems:
+
+\begin{itemize}
+    \item The speed of the travel ($v_c$ in (2)) is related to the
+    knapsack’s current weight, 
+    ($v_c = (v_{max} - W_c \frac{v_{max}-v_{min}}{W})$)
+    where $W_c$ is the current weight of knapsack, $v_{max}$ and $v_{min}$
+    are the maximum and minimum velocity of the thief, and
+    $W$ is the maximum capacity of knapsack. Note that the
+    time of the travel between two cities is calculated via (2).
+    According to this formulation, the speed of the thief ($v_c$)
+    decreases when the weight of the knapsack increases. Note
+    that the thief travels in $v_{max}$ when the knapsack is empty
+    ($W_c=0$) and in $v_min$ when the knapsack is full ($W_c=W$).
+
+    \item The value of the picked items drops by time.
+    In fact, the final value of the item at the end of the travel is not the
+    same as its value when the thief picked the item. This
+    value is dependent on travel time. The dropping rate is
+    defined by $Dr^{\lceil \frac{T_i}{C} \rceil}$ where $T_i$ is the total time that the item i
+    is carried by the thief and C is a constant. The new value
+    of the item i at the end of the tour is calculated by 
+    $p_i*Dr^{\lceil \frac{T_i}{C} \rceil}$ where $i$ is the item number. \\
+\end{itemize}
+
+Note that the rule is to pick the items before the tour is
+completed. Hence, the thief cannot pick any more items when
+he gets back in the starting city. The aim of $TTP_2$ is to satisfy
+the following objectives:
+
+\begin{equation}
+    G(x,z) =
+\left\{
+	\begin{array}{ll}
+		min & f(x,z)  \\
+		max & g(x,z)
+	\end{array}
+\right.
+\end{equation}
+
+where $x$ and $z$ are the tour and picking plan, respectively. \\
+
+The function $f$ is the time of the tour which is calculated
+according to the distance of the cities and the weight of the
+picked items. Also, $g$ is the total value of all picked items after
+completing the tour (note that the value of the items drops by
+the time that they were in the knapsack). The function $f$ is
+related to the knapsack weight, in such a way that the heavier
+the knapsack gets, the slower the thief can travel, resulting in
+greater time being taken to complete the tour. Also, the value
+of the picked items after completing the tour depends on the
+time of the tour and the original value of the items. The aim is
+to maximize the total value of the picked items and minimize
+the time for completing the tour. 
+
+\section{Problem Encoding}
+
+There are 2 independant populations solving each problem independently but linked with a friend in the other population. %%Pendiente citacion
+
+\subsection{TSP population}
+The encoding of each individual is a permutation of $n$ elements called tour,
+this represents the order in which the traveler visit the cities. 
+Aditionaly each individual have a number that identify his friend in the KP population.
+
+\subsection{KP population}
+The encoding of each individual is a bit-array with size $m$ that represents the desition of picking each item.
+In adition have a number that identify his friend in the TSP population (Encoded in base-2).
+
+\subsection{Friends}
+...
+
+\section{Conclutions}
+
+%\begin{thebibliography}{X}
+    %Main https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf (este da una proposicion mejor de multiobjetivo)
+    
+    %%Instancias del problema https://cs.adelaide.edu.au/~optlog/CEC2014COMP_InstancesNew/
+    %%Benchmark https://cs.adelaide.edu.au/~ec/research/ttp/2014gecco-ttp.pdf
+    %%BO-TTP https://cs.adelaide.edu.au/~markus/pub/2018gecco-emottp.pdf
+    %%Mas cosas https://cs.adelaide.edu.au/~ec/research/combinatorial.php   
+%\end{thebibliography}
+
+\end{document}
