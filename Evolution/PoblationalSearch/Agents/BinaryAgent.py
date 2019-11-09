@@ -6,10 +6,6 @@ class BinaryAgent(Agent):
 	def init(self, size):
 		self.genome = [random() < 0.5 for _ in range(size)]
 
-	def evaluate(self, function):
-		if self.fitness is None:
-			self.fitness = function(self.genome)
-
 	def mutate(self, rate=-1):
 		rate = rate if rate >= 0 else 1/len(self.genome)
 		for i in range(len(self.genome)):

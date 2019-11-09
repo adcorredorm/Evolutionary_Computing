@@ -8,7 +8,8 @@ class Agent(metaclass=ABCMeta):
 
 	@abstractmethod
 	def evaluate(self, function):
-		pass
+		if self.fitness is None:
+			self.fitness = function(self.genome)
 
 	def __init__(self, **kwargs):
 		self.genome = []

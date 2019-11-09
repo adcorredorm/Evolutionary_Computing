@@ -8,10 +8,6 @@ class RealAgent(Agent):
 		if exogenous:
 			self.exogenous = self.init_exogenous()
 
-	def evaluate(self, function):
-		if self.fitness is None:
-			self.fitness = function(self.genome)
-
 	def mutate(self, sigma=0.1, rate=-1):
 		if rate < 0:
 			rate = 1/len(self.genome)
