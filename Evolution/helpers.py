@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot_poblation(data):
+def plot_stats(data):
   _min = []
   _max = []
   avg = []
@@ -24,3 +24,11 @@ def plot_poblation(data):
   plt.xlabel('generations')
 
   plt.show()
+
+def make_experiment(algorithm_class, algorithm_args, p_size, executions):
+  algorithm = algorithm_class(**algorithm_args)
+  stats = []
+  for _ in range(executions):
+    stats.append(algorithm.execute(p_size)[1])
+  plot_stats(stats)
+  return stats

@@ -1,15 +1,15 @@
 # pylint: disable=import-error, no-name-in-module
-from helpers import plot_poblation
-from PoblationalSearch.Algorithms.BinaryGA import BinaryGA
-from PoblationalSearch.Algorithms.RealGA import RealGA
-from PoblationalSearch.Functions.Binary import max_one
-from PoblationalSearch.Functions.Real import ackley, rastrigin, michalewicz
+from helpers import make_experiment
+from PoblationalSearch.Algorithms.PermutationGA import PermutationGA
+from PoblationalSearch.Functions.Permutations import dummy
 
-kwargs = {}
+args = {
+    'function': dummy,
+    'ind_size': 30,
+    'generations': 100,
+    'crossover_rate': 0.7
+}
 
-alg = RealGA(ackley, 10, 100, 0.7, -32.768, 32.768, **kwargs)
-pop = []
+p_size = 100
 executions = 10
-for _ in range(executions):
-    pop.append(alg.execute(100)[1])
-plot_poblation(pop)
+make_experiment(PermutationGA, args, p_size, executions)
