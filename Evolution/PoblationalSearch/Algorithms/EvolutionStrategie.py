@@ -1,9 +1,8 @@
 from random import random, shuffle, sample, randint
-from Algorithm import PoblationalAlgorithm
-from Agents.RealAgent import RealAgent
+from .Algorithm import PoblationalAlgorithm
+from ..Agents.RealAgent import RealAgent
 from numpy.random import dirichlet
 from numpy import zeros, ones
-import Functions.Real as func
 
 class EvolutionStrategie(PoblationalAlgorithm):
 
@@ -47,6 +46,3 @@ class EvolutionStrategie(PoblationalAlgorithm):
       population.append(ind)
     return population
     
-if __name__ == '__main__':
-  best = EvolutionStrategie(func.ackley, 5, 100).execute(100)[0]
-  print(best)

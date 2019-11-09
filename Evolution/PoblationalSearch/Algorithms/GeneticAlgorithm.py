@@ -1,5 +1,5 @@
 from random import random, shuffle, sample, randint
-from Algorithm import PoblationalAlgorithm
+from .Algorithm import PoblationalAlgorithm
 
 class GeneticAlgorithm(PoblationalAlgorithm):
 

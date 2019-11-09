@@ -1,7 +1,6 @@
-import Functions.Real as func
-from Agents.RealAgent import RealAgent
+from ..Agents.RealAgent import RealAgent
 from random import sample
-from GeneticAlgorithm import GeneticAlgorithm
+from .GeneticAlgorithm import GeneticAlgorithm
 
 class RealGA(GeneticAlgorithm):
   
@@ -18,7 +17,3 @@ class RealGA(GeneticAlgorithm):
       ind.evaluate(self.function)
       population.append(ind)
     return population
-
-if __name__ == '__main__':
-  best = RealGA(func.ackley, 10, 100, 0.7, -32.768, 32.768).execute(100)[0]
-  print(best)

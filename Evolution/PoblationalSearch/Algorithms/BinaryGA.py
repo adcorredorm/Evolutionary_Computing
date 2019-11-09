@@ -1,7 +1,6 @@
-from Functions.Binary import max_one
-from Agents.BinaryAgent import BinaryAgent
-from GeneticAlgorithm import GeneticAlgorithm
-from helpers import plot_poblation
+from ..Functions.Binary import max_one
+from ..Agents.BinaryAgent import BinaryAgent
+from .GeneticAlgorithm import GeneticAlgorithm
 
 class BinaryGA(GeneticAlgorithm):
   
