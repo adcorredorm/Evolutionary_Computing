@@ -34,8 +34,8 @@ class GeneticAlgorithm(PoblationalAlgorithm):
       p1, p2 = parents[i], parents[i+1]
       if random() < self.crossover_rate:
         cut_point = randint(1, len(p1)-1)
-        h1 = self.agent(genome=p1.genome[:cut_point] + p2.genome[cut_point:])
-        h2 = self.agent(genome=p2.genome[:cut_point] + p1.genome[cut_point:])
+        h1 = self.agent(genome=self.cross_parents(p1, p2, cut_point))
+        h2 = self.agent(genome=self.cross_parents(p2, p1, cut_point))
         h1.mutate()
         h1.evaluate(self.function)
         h2.mutate()
@@ -44,6 +44,9 @@ class GeneticAlgorithm(PoblationalAlgorithm):
       else:
         childs += [p1, p2]
     return childs
+  
+  def cross_parents(self, p1, p2, point):
+    return p1.genome[:point] + p2.genome[point:]
 
   def replace(self, population, parents, childs):
     pop = []
