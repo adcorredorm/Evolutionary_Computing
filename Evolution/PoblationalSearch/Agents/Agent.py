@@ -6,7 +6,6 @@ class Agent(metaclass=ABCMeta):
 	def init(self, size):
 		pass
 
-	@abstractmethod
 	def evaluate(self, function):
 		if self.fitness is None:
 			self.fitness = function(self.genome)
