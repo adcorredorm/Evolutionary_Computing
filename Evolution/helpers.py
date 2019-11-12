@@ -28,7 +28,10 @@ def plot_stats(data):
 def make_experiment(algorithm_class, algorithm_args, p_size, executions):
   algorithm = algorithm_class(**algorithm_args)
   stats = []
+  solutions = []
   for _ in range(executions):
-    stats.append(algorithm.execute(p_size)[1])
+    values = algorithm.execute(p_size)
+    solutions.append(values[0])
+    stats.append(values[1])
   plot_stats(stats)
-  return stats
+  return (solutions, stats)

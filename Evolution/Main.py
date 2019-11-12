@@ -2,14 +2,16 @@
 from helpers import make_experiment
 from PoblationalSearch.Algorithms.PermutationGA import PermutationGA
 from PoblationalSearch.Functions.Permutations import dummy
+from TSP.tsp_loader import eval_tsp
 
 args = {
-    'function': dummy,
-    'ind_size': 30,
+    'function': eval_tsp,
+    'ind_size': 29,
     'generations': 100,
     'crossover_rate': 0.7
 }
 
 p_size = 100
 executions = 10
-make_experiment(PermutationGA, args, p_size, executions)
+ind, stats = make_experiment(PermutationGA, args, p_size, executions)
+print(min(ind))
