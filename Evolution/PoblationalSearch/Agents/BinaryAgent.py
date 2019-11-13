@@ -3,7 +3,7 @@ from .Agent import Agent
 
 class BinaryAgent(Agent):
 
-	def init(self, size):
+	def init(self, size, **kwargs):
 		self.genome = [random() < 0.5 for _ in range(size)]
 
 	def mutate(self, rate=-1):

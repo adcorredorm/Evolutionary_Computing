@@ -1,19 +1,7 @@
 import tsplib95
 from random import shuffle
-from ..Agents.PermutationAgent import PermutationAgent
+from ..Agents.PermutationAgent import TSPAgent
 from .GeneticAlgorithm import GeneticAlgorithm
-
-class TSPAgent(PermutationAgent):
-    
-    def init(self, size):
-        self.genome = [i+2 for i in range(size)]
-        shuffle(self.genome)
-
-    def __str__(self):
-        S = '[1,'
-        for value in self.genome:
-            S += str(value) + ','
-        return S[:-1] + '] ' + '{:0.2f}'.format(self.fitness)
 
 
 class TSPGA(GeneticAlgorithm):

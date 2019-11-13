@@ -3,7 +3,7 @@ from abc import abstractmethod, ABCMeta
 class Agent(metaclass=ABCMeta):
 
 	@abstractmethod
-	def init(self, size):
+	def init(self, size, **kwargs):
 		pass
 
 	def evaluate(self, function):

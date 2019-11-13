@@ -3,7 +3,7 @@ from .Agent import Agent
 
 class PermutationAgent(Agent):
 
-  def init(self, size):
+  def init(self, size, **kwargs):
     self.genome = [i for i in range(size)]
     shuffle(self.genome)
 
@@ -20,6 +20,19 @@ class PermutationAgent(Agent):
 
   def __str__(self):
     S = '['
+    for value in self.genome:
+      S += str(value) + ','
+    return S[:-1] + '] ' + '{:0.2f}'.format(self.fitness)
+  
+
+class TSPAgent(PermutationAgent):
+    
+  def init(self, size, **kwargs):
+    self.genome = [i+2 for i in range(size)]
+    shuffle(self.genome)
+
+  def __str__(self):
+    S = '[1,'
     for value in self.genome:
       S += str(value) + ','
     return S[:-1] + '] ' + '{:0.2f}'.format(self.fitness)
