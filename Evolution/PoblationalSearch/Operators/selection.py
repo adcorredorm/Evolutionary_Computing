@@ -1,31 +1,42 @@
 from random import random, sample
+from .Operator import Operator
 
-def uniform_selection(population, size=0):
-    if size == 0: 
-        size = len(population)
-    parents = []
-    for _ in range(size):
-      parents.append(sample(population, 1))
-    return parents
+class uniform_selection(Operator):
 
-def tournament(population, size=0):
-    if size == 0: 
-        size = len(population)
-    parents = []
-    for _ in range(size):
-        cand = sample(population, 4)
-        while len(cand) > 1:
-            part = sorted([cand[0], cand[1]])
-            cand = cand[2:]
-            if random() < 2/3: cand.append(part[0])
-            else: cand.append(part[1])
-        parents.append(cand[0])
-    return parents
+    def apply(self, agents, size=-1):
+        size = size if size >= 0 else len(agents)
+        selected = []
+        for _ in range(size):
+            selected += sample(agents, 1)
+        return selected
 
-def elitist_tournament(population, size=0):
-    if size == 0: 
-        size = len(population)
-    parents = []
-    for _ in range(size):
-      parents.append(min(sample(population, 4)))
-    return parents
+class tournament_selection(Operator):
+
+    def __init__(self, t_size=4, pick_method=uniform_selection, advantage=2/3, **kwargs):
+        super().__init__(kwargs)
+        self.t_size = t_size
+        self.pick_method = pick_method()
+        self.advantage = advantage
+    
+    def make_tournament(self, candidates):
+        while len(candidates) > 1:
+            duel = sorted(candidates[0], candidates[1])
+            winner = duel[0] if random() < self.advantage else duel[1]
+            candidates = candidates[2:].append(winner)
+        return candidates[0]
+
+    def apply(self, agents, size=-1):
+        size = size if size >= 0 else len(agents)
+        selected = []
+        for _ in range(size):
+            candidates = self.pick_method.apply(agents, self.t_size)
+            selected.append(self.make_tournament(candidates))
+        return selected
+
+class elitist_tournament(tournament_selection):
+
+    def __init__(self, t_size=4, **kwargs):
+        super().__init__(t_size, advantage=1, **kwargs)
+    
+    def make_tournament(self, candidates):
+        return sorted(candidates)[0]

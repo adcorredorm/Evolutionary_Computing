@@ -3,7 +3,7 @@ from .Operator import Operator
 
 class bin_mutation(Operator):
 
-    def apply(self, agents, rate=-1, **kwargs):
+    def apply(self, agents, rate=-1):
         agent = agents[0]
         rate = rate if rate >= 0 else 1/len(agent.genome)
         for i in range(len(agent.genome)):
@@ -13,7 +13,7 @@ class bin_mutation(Operator):
 
 class real_mutation(Operator):
 
-    def apply(self, agents, rate=-1, sigma=0.1, **kwargs):
+    def apply(self, agents, rate=-1, sigma=0.1):
         agent = agents[0]
         rate = rate if rate >= 0 else 1/len(agent.genome)
         for i in range(len(agent.genome)):
@@ -23,7 +23,7 @@ class real_mutation(Operator):
 
 class perm_mutation(Operator):
 
-    def apply(self, agents, **kwargs):
+    def apply(self, agents):
         agent = agents[0]
         size = len(agent.genome)
         p1, p2 = randint(0, size - 1), randint(0, size - 1)
