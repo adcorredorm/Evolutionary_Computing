@@ -9,12 +9,7 @@ class RealAgent(Agent):
 			self.exogenous = self.init_exogenous()
 		
 	def init_exogenous(self):
-		return [random() for _ in range(len(self.genome))]
-	
-	def mutate_exogenous(self):
-		self.exogenous = [gauss(ex, ex) for ex in self.exogenous]
-		for i in range(len(self.genome)):
-			self.genome[i] = gauss(self.genome[i], self.exogenous[i])
+		return [random() for _ in self.genome]
 
 	def __str__(self):
 		S = ''

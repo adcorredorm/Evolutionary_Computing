@@ -1,5 +1,6 @@
 # pylint: disable=import-error, no-name-in-module
 from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
+from PoblationalSearch.Algorithms.EvolutionStrategie import EvolutionStrategie
 
 from PoblationalSearch.Agents.BinaryAgent import BinaryAgent
 from PoblationalSearch.Agents.RealAgent import RealAgent
@@ -22,7 +23,7 @@ binary_GA = {
     'p_size': p_size,
     'generations': generations,
     'agent': BinaryAgent,
-    'selection_op': selection.shuffle_selection(),
+    'selection_op': selection.uniform_selection(),
     'mutation_op': mutation.bin_mutation(),
     'crossover_rate': 0.7,
     'crossover_op': crossover.simple_crossover(10)
@@ -61,3 +62,20 @@ permutation_GA = {
 }
 pga = GeneticAlgorithm(**permutation_GA).execute()
 print(pga.best_ind[-1])
+
+evolution_strategy = {
+    'function': ackley,
+    'ind_size': 5,
+    'p_size': p_size,
+    'generations': generations,
+    'selection_op': selection.random_selection(),
+    'mutation_op': mutation.e_strategy_mutation(),
+    'recombination_op': crossover.real_crossover(5, 'exogenous'),
+    'marriage_size': 2,
+    'agent_args': {
+        '_min': -32.768,
+        '_max': 32.768
+    },
+}
+es = EvolutionStrategie(**evolution_strategy).execute()
+print(es.best_ind[-1])

@@ -42,9 +42,9 @@ class real_crossover(Operator):
 
     @staticmethod
     def recombinate(alpha, values):
-        vector = zeros(len(values))
+        vector = zeros(len(values[0]))
         for i in range(len(vector)):
-            vector[i] = sum(alpha[j] * values[j] for j in range(len(values)))
+            vector[i] = sum(alpha[j] * values[j][i] for j in range(len(values)))
         return vector
     
     def apply(self, agents):
@@ -54,7 +54,7 @@ class real_crossover(Operator):
             aux = [agent.__dict__[param] for agent in agents]
             values[param] = real_crossover.recombinate(alpha, aux)
         
-        _cls = agents[0].__cls__
+        _cls = agents[0].__class__
         return [_cls(**values)]
 
 class perm_crossover(Operator):

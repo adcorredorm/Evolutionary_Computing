@@ -1,48 +1,45 @@
-from random import random, shuffle, sample, randint
 from .Algorithm import PoblationalAlgorithm
 from ..Agents.RealAgent import RealAgent
-from numpy.random import dirichlet
-from numpy import zeros, ones
 
 class EvolutionStrategie(PoblationalAlgorithm):
 
-  def __init__(self, function, ind_size, generations, **kwargs):
-    super().__init__(function, **kwargs)
-    self.generations = generations
-    self.ind_size = ind_size
+    def __init__(self, function, ind_size, p_size, generations, selection_op, 
+            mutation_op, recombination_op, marriage_size=2, agent_args={}, **kwargs):
+        self.ind_size = ind_size
+        self.generations = generations
+        self.marriage_size = marriage_size
+        self.agent_args = agent_args
+        super().__init__(function, p_size, **kwargs)
 
-  def init_population(self, p_size):
-    population = []
-    for _ in range(p_size):
-      ind = RealAgent()
-      ind.init(self.ind_size, exogenous=True)
-      ind.evaluate(self.function)
-      population.append(ind)
-    return population
+        #Operators
+        self.selection_op = selection_op
+        self.mutation_op = mutation_op
+        self.recombination_op = recombination_op
 
-  def stop(self, population, k):
-    return self.generations <= k
+    def init_population(self, p_size):
+        population = []
+        for _ in range(p_size):
+            ind = RealAgent()
+            ind.init(self.ind_size, exogenous=True, **self.agent_args)
+            ind.fitness = self.function(ind.genome)
+            population.append(ind)
+        return population
 
-  def marriage(self, population, size):
-    return sample(population, size)
+    def stop(self, population, k):
+        return self.generations <= k
 
-  def recombination(self, parents):
-    alpha = dirichlet(ones(len(parents)), 1)[0]
-    gen = zeros(self.ind_size)
-    exo = zeros(self.ind_size)
-    for i in range(self.ind_size):
-      gen[i] = sum([alpha[j] * parents[j].genome[i] for j in range(len(parents))])
-    for i in range(len(exo)):
-      exo[i] = sum([alpha[j] * parents[j].exogenous[i] for j in range(len(parents))])
-    agent = RealAgent(genome=gen, exogenous=exo)
-    agent.evaluate(self.function)
-    return agent
+    def replace(self, population, children):
+        total = population + children
+        total.sort()
+        return total[:len(population)]
 
-  def grow(self, population, k):
-    for _ in range(len(population)):
-      parents = self.marriage(population, 2)
-      ind = self.recombination(parents)
-      ind.mutate_exogenous()
-      population.append(ind)
-    return population
+    def grow(self, population, k):
+        children = []
+        for _ in range(len(population)):
+            parents = self.selection_op.apply(population, size=self.marriage_size)
+            ind = self.recombination_op.apply(parents)
+            ind = self.mutation_op.apply(ind)[0]
+            ind.fitness = self.function(ind.genome)
+            children.append(ind)
+        return self.replace(population, children)
     

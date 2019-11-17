@@ -1,11 +1,12 @@
 from random import random, sample, shuffle
 from .Operator import Operator
 
-class shuffle_selection(Operator):
+class random_selection(Operator):
 
-    def apply(self, agents):
+    def apply(self, agents, size=-1):
+        size = size if size >= 0 else len(agents)
         shuffle(agents)
-        return agents
+        return agents[:size]
 
 class uniform_selection(Operator):
 
