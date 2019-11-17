@@ -9,7 +9,7 @@ class bin_mutation(Operator):
         for i in range(len(agent.genome)):
             if random() < rate:
                 agent.genome[i] = not agent.genome[i]
-        return [agents]
+        return [agent]
 
 class real_mutation(Operator):
 
