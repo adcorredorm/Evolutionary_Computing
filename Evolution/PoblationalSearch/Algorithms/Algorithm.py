@@ -1,5 +1,4 @@
 from abc import abstractmethod, ABCMeta
-from .Tracer import Tracer
 
 class PoblationalAlgorithm(metaclass=ABCMeta):
 
@@ -33,3 +32,17 @@ class PoblationalAlgorithm(metaclass=ABCMeta):
             self.tracer.add(self.population)
             k += 1
         return self.tracer
+
+
+class Tracer():
+
+    def __init__(self):
+        self.best_ind = []
+        self.best_fit = []
+        self.last_generation = None
+
+    def add(self, population):
+        best = sorted(population)[0]
+        self.best_ind.append(best)
+        self.best_fit.append(best.fitness)
+        self.last_generation = population
