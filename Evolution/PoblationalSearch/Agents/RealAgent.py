@@ -7,13 +7,6 @@ class RealAgent(Agent):
 		self.genome = [random()*(_max - _min) + _min for _ in range(size)]
 		if exogenous:
 			self.exogenous = self.init_exogenous()
-
-	def mutate(self, sigma=0.1, rate=-1):
-		if rate < 0:
-			rate = 1/len(self.genome)
-		for i in range(len(self.genome)):
-			if random() < rate:
-				self.genome[i] = gauss(self.genome[i], sigma)
 		
 	def init_exogenous(self):
 		return [random() for _ in range(len(self.genome))]
@@ -22,9 +15,6 @@ class RealAgent(Agent):
 		self.exogenous = [gauss(ex, ex) for ex in self.exogenous]
 		for i in range(len(self.genome)):
 			self.genome[i] = gauss(self.genome[i], self.exogenous[i])
-		
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
 
 	def __str__(self):
 		S = ''
