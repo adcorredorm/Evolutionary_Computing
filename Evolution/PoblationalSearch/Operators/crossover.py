@@ -65,7 +65,7 @@ class perm_crossover(Operator):
 
     def cross_parents(self, p1, p2, point):
         gen = p1.genome[:point]
-        while len(gen < self.ind_size):
+        while len(gen) < self.ind_size:
             point = (point + 1)%self.ind_size
             if p2.genome[point] not in gen:
                 gen.append(p2.genome[point])
