@@ -1,3 +1,5 @@
+import tsplib95
+
 # pylint: disable=import-error, no-name-in-module
 from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 from PoblationalSearch.Algorithms.EvolutionStrategie import EvolutionStrategie
@@ -79,3 +81,28 @@ evolution_strategy = {
 }
 es = EvolutionStrategie(**evolution_strategy).execute()
 print(es.best_ind[-1])
+
+
+def tsp(genome):
+    tsp_path = 'TSP/bays29.tsp'
+    tsp_problem = tsplib95.load_problem(tsp_path)
+
+    count = 0
+    for i in range(len(genome) - 1):
+        count += tsp_problem.wfunc(genome[i]+1, genome[i + 1]+1)
+    return count + tsp_problem.wfunc(genome[-1]+1, genome[0]+1)
+
+tsp_GA = {
+    'function': tsp,
+    'ind_size': 29,
+    'p_size': p_size,
+    'generations': generations,
+    'agent': PermutationAgent,
+    'selection_op': selection.elitist_tournament(),
+    'mutation_op': mutation.perm_mutation(),
+    'crossover_rate': 0.7,
+    'crossover_op': crossover.perm_crossover(29)
+}
+
+tspga = GeneticAlgorithm(**tsp_GA).execute()
+print(tspga.best_ind[-1])
