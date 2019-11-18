@@ -1,5 +1,6 @@
 from random import random, gauss, randint
 from .Operator import Operator
+from .fix import *
 
 class bin_mutation(Operator):
 
@@ -57,4 +58,30 @@ class e_strategy_mutation(Operator):
         for i in range(len(agent.genome)):
             agent.genome[i] = gauss(agent.genome[i], agent.exogenous[i])
         agent.fitness = None
+        return [agent]
+
+class kp_mutation(Operator):
+
+    def __init__(self, W, item_w, mutation, **kwargs):
+        super().__init__(**kwargs)
+        self.mutation = mutation
+        self.fix = kp_fix(W, item_w)
+    
+    def apply(self, agents):
+        a = self.mutation.apply(agents)
+        return self.fix.apply(a)
+
+class tsp_mutation(Operator):
+
+    def __init__(self, mutation_op, **kwargs):
+        super().__init__(**kwargs)
+        self.mutation_op = mutation_op
+
+    def apply(self, agents, rate=-1):
+        agents = self.mutation_op.apply(agents)
+        agent = agents[0]
+        rate = rate if rate >= 0 else 1/len(agent.genome)
+        for i in range(len(agent.friends)):
+            if random() < rate:
+                agent.friends[i] = randint(0, agent.pop_sizes[i] - 1)
         return [agent]

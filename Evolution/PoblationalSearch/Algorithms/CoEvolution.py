@@ -6,11 +6,12 @@ class CoEvolution():
         
         self.p_sizes = [arg['p_size'] for arg in alg_args]
         self.algorithms = []
+        evaluate = lambda x: None
         for i in range(len(algorithms)):
             arg = alg_args[i]
             arg['function'] = self.function
             arg['tracer'] = False
-            arg['evaluate'] = self.evaluate
+            arg['evaluate'] = evaluate
             pop_sizes = self.p_sizes[:i] + self.p_sizes[i+1:]
             if 'agent_args' in arg:
                 arg['agent_args'].update({'pop_sizes': pop_sizes})
@@ -19,6 +20,10 @@ class CoEvolution():
 
             pop = algorithms[i](**arg)
             self.algorithms.append(pop)
+
+        for alg in self.algorithms:
+            alg.__dict__['evaluate'] = self.evaluate
+
         self.evaluate_all()
 
         self.tracer = CoTracer()

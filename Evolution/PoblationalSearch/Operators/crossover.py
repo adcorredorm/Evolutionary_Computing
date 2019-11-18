@@ -3,6 +3,7 @@ from numpy.random import dirichlet
 from numpy import zeros, ones
 from random import randint, sample
 from .Operator import Operator
+from .fix import *
 
 class multipoint_crossover(Operator):
 
@@ -84,4 +85,14 @@ class perm_crossover(Operator):
             aux.fitness = None
             children.append(aux)
         return children
-        
+
+class kp_crossover(Operator):
+
+    def __init__(self, W, item_w, crossover, **kwargs):
+        super().__init__(**kwargs)
+        self.crossover = crossover
+        self.fix = kp_fix(W, item_w)
+    
+    def apply(self, agents):
+        a = self.crossover.apply(agents)
+        return self.fix.apply(a)
