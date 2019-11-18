@@ -34,6 +34,20 @@ class perm_mutation(Operator):
         agent.genome[p2] = aux
         agent.fitness = None
         return [agent]
+    
+class flip_mutation(Operator):
+
+    def apply(self, agents):
+        agent = agents[0]
+        size = len(agent.genome)
+        p1, p2 = randint(0, size - 1), randint(0, size - 1)
+        p1, p2 = sorted([p1, p2])
+        n_gen = agent.genome[:p1]
+        n_gen += reversed(agent.genome[p1:p2])
+        n_gen += agent.genome[p2:]
+        agent.genome = n_gen
+        agent.fitness = None
+        return [agent]
 
 class e_strategy_mutation(Operator):
 

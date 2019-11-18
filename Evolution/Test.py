@@ -60,7 +60,7 @@ permutation_GA = {
     'generations': generations,
     'agent': PermutationAgent,
     'selection_op': selection.elitist_tournament(),
-    'mutation_op': mutation.perm_mutation(),
+    'mutation_op': mutation.flip_mutation(),
     'crossover_rate': 0.7,
     'crossover_op': crossover.perm_crossover(10)
 }

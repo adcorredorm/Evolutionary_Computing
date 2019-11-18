@@ -7,7 +7,7 @@ from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 from PoblationalSearch.Agents.PermutationAgent import PermutationAgent
 from helpers import make_experiment
 
-tsp_path = 'TSP/bays29.tsp'
+tsp_path = 'TSP/eil51.tsp'
 tsp_problem = tsplib95.load_problem(tsp_path)
 def tsp(genome):
     count = 0
@@ -17,14 +17,14 @@ def tsp(genome):
 
 tsp_GA = {
     'function': tsp,
-    'ind_size': 29,
+    'ind_size': 51,
     'p_size': 100,
     'generations': 100,
     'agent': PermutationAgent,
     'selection_op': selection.elitist_tournament(),
     'mutation_op': mutation.flip_mutation(),
     'crossover_rate': 0.7,
-    'crossover_op': crossover.perm_crossover(29)
+    'crossover_op': crossover.perm_crossover(51)
 }
 
 res = make_experiment(GeneticAlgorithm, tsp_GA, 10)
