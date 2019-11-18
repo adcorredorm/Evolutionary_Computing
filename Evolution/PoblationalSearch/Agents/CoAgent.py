@@ -2,28 +2,26 @@ from abc import abstractmethod, ABCMeta
 from random import randint
 from .Agent import Agent
 from.BinaryAgent import BinaryAgent
-from .PermutationAgent import TSPAgent
+from .PermutationAgent import PermutationAgent
 
 class CoAgent(metaclass=ABCMeta):
 
 	@abstractmethod
-	def get_friends(self):
-		return []
+	def get_friends(self, populations):
+		return [self]
 
-class TSPCoAgent(TSPAgent, CoAgent):
+class TSPCoAgent(PermutationAgent, CoAgent):
 
 	def init(self, size, pop_sizes, **kwargs):
 		super().init(size, **kwargs)
 		self.pop_sizes = pop_sizes
 		self.friends = [randint(0, p_size - 1) for p_size in pop_sizes]
 
-	def get_friends(self):
-		return self.friends
-	
-	def mutate(self):
-		super().mutate()
-		selected = randint(0, len(self.friends) - 1)
-		self.friends[selected] = randint(0, self.pop_sizes[selected] - 1)
+	def get_friends(self, populations):
+		friends = [self]
+		for i in range(len(populations)):
+			friends.append(populations[i][self.friends[i]])
+		return friends
 
 class KPCoAgent(BinaryAgent, CoAgent):
 
@@ -41,13 +39,17 @@ class KPCoAgent(BinaryAgent, CoAgent):
 	def calculate_bits(self):
 		return max(len(bin(p_size - 1)) for p_size in self.pop_sizes) - 2
 
-	def get_friends(self):
-		friends = []
+	def get_friends(self, populations):
+		friends_i = []
 		acumulate = self.size
 		for _ in self.pop_sizes:
 			code = self.genome[acumulate : acumulate + self.bits]
-			friends.append(KPCoAgent.bool_to_number(code))
+			friends_i.append(KPCoAgent.bool_to_number(code))
 			acumulate += self.bits
+
+		friends = [self]
+		for i in range(len(populations)):
+			friends.append(populations[i][friends_i[i]])
 		return friends
 
 	def init(self, size, pop_sizes, **kwargs):

@@ -14,22 +14,29 @@ class PoblationalAlgorithm(metaclass=ABCMeta):
     def grow(self, population, k):
         pass
 
+    def evaluate(self, agents):
+        for agent in agents:
+            agent.fitness = self.function(agent.genome)
+
     def select(self, population):
         return sorted(population)[0]
 
-    def __init__(self, function, p_size, **kwargs):
+    def __init__(self, function, p_size, tracer=True, **kwargs):
         self.function = function
         self.__dict__.update(kwargs)
-        self.tracer = Tracer()
-
         self.population = self.init_population(p_size)
-        self.tracer.add(self.population)
+        
+        self.tracer_on = tracer
+        if tracer:
+            self.tracer = Tracer()
+            self.tracer.add(self.population)
 
     def execute(self):
         k = 0
         while not self.stop(self.population, k):
             self.population = self.grow(self.population, k)
-            self.tracer.add(self.population)
+            if self.tracer_on:
+                self.tracer.add(self.population)
             k += 1
         return self.tracer
 

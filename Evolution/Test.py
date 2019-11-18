@@ -3,10 +3,12 @@ import tsplib95
 # pylint: disable=import-error, no-name-in-module
 from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 from PoblationalSearch.Algorithms.EvolutionStrategie import EvolutionStrategie
+from PoblationalSearch.Algorithms.CoEvolution import CoEvolution
 
 from PoblationalSearch.Agents.BinaryAgent import BinaryAgent
 from PoblationalSearch.Agents.RealAgent import RealAgent
 from PoblationalSearch.Agents.PermutationAgent import PermutationAgent
+from PoblationalSearch.Agents.CoAgent import KPCoAgent
 
 from PoblationalSearch.Functions.Binary import max_one
 from PoblationalSearch.Functions.Real import ackley, michalewicz, rastrigin
@@ -28,7 +30,7 @@ binary_GA = {
     'selection_op': selection.uniform_selection(),
     'mutation_op': mutation.bin_mutation(),
     'crossover_rate': 0.7,
-    'crossover_op': crossover.simple_crossover(10)
+    'crossover_op': crossover.simple_crossover()
 }
 bga = GeneticAlgorithm(**binary_GA).execute()
 print(bga.best_ind[-1])
@@ -46,7 +48,7 @@ binary_GA = {
     'selection_op': selection.tournament_selection(),
     'mutation_op': mutation.real_mutation(),
     'crossover_rate': 0.7,
-    'crossover_op': crossover.multipoint_crossover(10, 2)
+    'crossover_op': crossover.multipoint_crossover(2)
 }
 rga = GeneticAlgorithm(**binary_GA).execute()
 print(rga.best_ind[-1])
@@ -106,3 +108,41 @@ tsp_GA = {
 
 tspga = GeneticAlgorithm(**tsp_GA).execute()
 print(tspga.best_ind[-1])
+
+def coFunction(agents):
+    total = 0
+    for agent in agents:
+        total += max_one(agent.genome[:agent.size])
+    return total
+
+test_co = {
+    'ind_size': 10,
+    'p_size': 16,
+    'generations': generations,
+    'agent': KPCoAgent,
+    'selection_op': selection.elitist_tournament(),
+    'mutation_op': mutation.bin_mutation(),
+    'crossover_rate': 0.7,
+    'crossover_op': crossover.simple_crossover()
+}
+
+test_co2 = {
+    'ind_size': 15,
+    'p_size': 16,
+    'generations': generations,
+    'agent': KPCoAgent,
+    'selection_op': selection.elitist_tournament(),
+    'mutation_op': mutation.bin_mutation(),
+    'crossover_rate': 0.9,
+    'crossover_op': crossover.simple_crossover()
+}
+
+Co_Evolution = {
+    'function': coFunction,
+    'generations': generations,
+    'algorithms': [GeneticAlgorithm, GeneticAlgorithm],
+    'alg_args': [test_co, test_co2]
+}
+
+coe = CoEvolution(**Co_Evolution).execute()
+print(*coe.get_best(), sep=' | ')

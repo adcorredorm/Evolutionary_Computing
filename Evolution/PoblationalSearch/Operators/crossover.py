@@ -6,16 +6,15 @@ from .Operator import Operator
 
 class multipoint_crossover(Operator):
 
-    def __init__(self, ind_size, k_points, **kwargs):
+    def __init__(self, k_points, **kwargs):
         super().__init__(**kwargs)
-        assert k_points < ind_size, "Cut points must be lower than individual's size"
-        self.ind_size = ind_size
         self.k_points = k_points
     
     def apply(self, agents):
+        ind_size = len(agents[0].genome)
         genomes = [[] for _ in range(len(agents))]
-        points = sample(range(1, self.ind_size), self.k_points)
-        points = sorted([0] + points + [self.ind_size])
+        points = sample(range(1, ind_size), self.k_points)
+        points = sorted([0] + points + [ind_size])
         for i in range(len(points) - 1):
             for j in range(len(agents)):
                 cut = agents[(i+j)%len(agents)].genome[points[i]:points[i+1]]
@@ -30,8 +29,8 @@ class multipoint_crossover(Operator):
 
 class simple_crossover(multipoint_crossover):
 
-    def __init__(self, ind_size, **kwargs):
-        super().__init__(ind_size, 1, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(1, **kwargs)
 
 class real_crossover(Operator):
 

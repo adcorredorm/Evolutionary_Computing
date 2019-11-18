@@ -21,8 +21,8 @@ class EvolutionStrategie(PoblationalAlgorithm):
         for _ in range(p_size):
             ind = RealAgent()
             ind.init(self.ind_size, exogenous=True, **self.agent_args)
-            ind.fitness = self.function(ind.genome)
             population.append(ind)
+        self.evaluate(population)
         return population
 
     def stop(self, population, k):
@@ -39,7 +39,7 @@ class EvolutionStrategie(PoblationalAlgorithm):
             parents = self.selection_op.apply(population, size=self.marriage_size)
             ind = self.recombination_op.apply(parents)
             ind = self.mutation_op.apply(ind)[0]
-            ind.fitness = self.function(ind.genome)
             children.append(ind)
+        self.evaluate(children)
         return self.replace(population, children)
     
