@@ -26,14 +26,21 @@ class real_mutation(Operator):
 
 class perm_mutation(Operator):
 
-    def apply(self, agents):
+    def apply(self, agents, rate=-1):
+        agent = agents[0]
+        rate = rate if rate >= 0 else 1/len(agent.genome)
         agent = agents[0]
         size = len(agent.genome)
-        p1, p2 = randint(0, size - 1), randint(0, size - 1)
-        aux = agent.genome[p1]
-        agent.genome[p1] = agent.genome[p2]
-        agent.genome[p2] = aux
-        agent.fitness = None
+        for i in range(size):
+            if random() < rate:
+                while True:
+                    p = randint(0, size - 1)
+                    if p != i:
+                        break
+                aux = agent.genome[i]
+                agent.genome[i] = agent.genome[p]
+                agent.genome[p] = aux
+                agent.fitness = None
         return [agent]
     
 class flip_mutation(Operator):
