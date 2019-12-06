@@ -1,5 +1,8 @@
+from numpy import ones
+from numpy.random import dirichlet
 from random import shuffle, randint
 from .Agent import Agent
+from .HaEaAgent import HaEaAgent
 
 class PermutationAgent(Agent):
 
@@ -21,4 +24,13 @@ class PermutationAgent(Agent):
         for value in self.genome:
             S += str(value) + ','
         return '[{}] {:0.2f}'.format(S[:-1], fit)
-  
+
+
+class HPerAgent(PermutationAgent, HaEaAgent):
+
+    def init(self, size, ops, **kwargs):
+        super().init(size, **kwargs)
+        self.init_rates(ops)
+    
+    def init_rates(self, ops):
+        self.rates = dirichlet(ones(ops))

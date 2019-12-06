@@ -19,9 +19,9 @@ tsp_GA = {
     'function': tsp,
     'ind_size': 51,
     'p_size': 100,
-    'generations': 100,
+    'generations': 300,
     'agent': PermutationAgent,
-    'selection_op': selection.elitist_tournament(),
+    'selection_op': selection.random_selection(),
     'mutation_op': mutation.flip_mutation(),
     'crossover_rate': 0.7,
     'crossover_op': crossover.perm_crossover(51)

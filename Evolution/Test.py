@@ -7,7 +7,7 @@ from PoblationalSearch.Algorithms.CoEvolution import CoEvolution
 
 from PoblationalSearch.Agents.BinaryAgent import BinaryAgent
 from PoblationalSearch.Agents.RealAgent import RealAgent
-from PoblationalSearch.Agents.PermutationAgent import PermutationAgent
+from PoblationalSearch.Agents.PermutationAgent import PermutationAgent, HPerAgent
 from PoblationalSearch.Agents.CoAgent import KPCoAgent
 
 from PoblationalSearch.Functions.Binary import max_one
@@ -108,6 +108,14 @@ tsp_GA = {
 
 tspga = GeneticAlgorithm(**tsp_GA).execute()
 print(tspga.best_ind[-1])
+
+tsp_HaEa = {
+    'function': tsp,
+    'ind_size': 29,
+    'p_size': p_size,
+    'generations': generations,
+    'agent': HPerAgent
+}
 
 def coFunction(agents):
     total = 0
