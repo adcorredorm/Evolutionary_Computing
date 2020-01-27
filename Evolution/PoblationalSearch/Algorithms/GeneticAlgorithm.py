@@ -23,7 +23,6 @@ class GeneticAlgorithm(PoblationalAlgorithm):
             ind = self.agent()
             ind.init(self.ind_size, **self.agent_args)
             population.append(ind)
-        self.evaluate(population)
         return population
   
     def stop(self, population, k):
@@ -40,7 +39,8 @@ class GeneticAlgorithm(PoblationalAlgorithm):
                 h1, h2 = self.crossover_op.apply([p1, p2])
                 h1 = self.mutation_op.apply([h1])[0]
                 h2 = self.mutation_op.apply([h2])[0]
-                self.evaluate([h1, h2])
+                if not self.stationary:
+                    self.evaluate([h1, h2])
                 childs += [h1, h2]
             else:
                 childs += [p1, p2]
@@ -49,7 +49,10 @@ class GeneticAlgorithm(PoblationalAlgorithm):
     def replace(self, population, parents, childs):
         pop = []
         for i in range(len(population)):
-            if childs[i] <= parents[i]: pop.append(childs[i])
+            #print(childs[i].fitness, parents[i].fitness)
+            if childs[i] <= parents[i]: 
+                pop.append(childs[i])
+                print('child is better')
             else: pop.append(parents[i])
         return pop
 

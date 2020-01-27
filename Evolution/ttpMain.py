@@ -63,7 +63,7 @@ kp = {
 
 ttp = {
     'function': ttp1,
-    'generations': 100,
+    'generations': 10,
     'algorithms': [GeneticAlgorithm, GeneticAlgorithm],
     'alg_args': [tsp, kp]
 }
@@ -71,5 +71,5 @@ ttp = {
 #coe = CoEvolution(**Co_Evolution).execute()
 #print(*coe.get_best(), sep='\n')
 
-res = make_experiment(CoEvolution, ttp, 10)
+res = make_experiment(CoEvolution, ttp, 2)
 print(min(gen[-1] for gen in res[1]))

@@ -32,8 +32,8 @@ binary_GA = {
     'crossover_rate': 0.7,
     'crossover_op': crossover.simple_crossover()
 }
-bga = GeneticAlgorithm(**binary_GA).execute()
-print(bga.best_ind[-1])
+#bga = GeneticAlgorithm(**binary_GA).execute()
+#print(bga.best_ind[-1])
 
 binary_GA = {
     'function': ackley,
@@ -50,8 +50,8 @@ binary_GA = {
     'crossover_rate': 0.7,
     'crossover_op': crossover.multipoint_crossover(2)
 }
-rga = GeneticAlgorithm(**binary_GA).execute()
-print(rga.best_ind[-1])
+#rga = GeneticAlgorithm(**binary_GA).execute()
+#print(rga.best_ind[-1])
 
 permutation_GA = {
     'function': dummy,
@@ -64,8 +64,8 @@ permutation_GA = {
     'crossover_rate': 0.7,
     'crossover_op': crossover.perm_crossover(10)
 }
-pga = GeneticAlgorithm(**permutation_GA).execute()
-print(pga.best_ind[-1])
+#pga = GeneticAlgorithm(**permutation_GA).execute()
+#print(pga.best_ind[-1])
 
 evolution_strategy = {
     'function': ackley,
@@ -81,8 +81,8 @@ evolution_strategy = {
         '_max': 32.768
     },
 }
-es = EvolutionStrategie(**evolution_strategy).execute()
-print(es.best_ind[-1])
+#es = EvolutionStrategie(**evolution_strategy).execute()
+#print(es.best_ind[-1])
 
 
 def tsp(genome):
@@ -106,8 +106,8 @@ tsp_GA = {
     'crossover_op': crossover.perm_crossover(29)
 }
 
-tspga = GeneticAlgorithm(**tsp_GA).execute()
-print(tspga.best_ind[-1])
+#tspga = GeneticAlgorithm(**tsp_GA).execute()
+#print(tspga.best_ind[-1])
 
 def coFunction(agents):
     total = 0
