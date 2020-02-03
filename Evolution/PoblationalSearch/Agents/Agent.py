@@ -24,19 +24,19 @@ class Agent(metaclass=ABCMeta):
 		return next(self.genome)
 
 	def __lt__(self, other):
-		return isinstance(other, self.__class__) and self.fitness < other.fitness
+		return self.fitness < other.fitness
 
 	def __le__(self, other): 
-		return isinstance(other, self.__class__) and self.fitness <= other.fitness
+		return self.fitness <= other.fitness
 	
 	def __eq__(self, other):
-		return isinstance(other, self.__class__) and self.fitness == other.fitness
+		return self.fitness == other.fitness
 
 	def __ne__(self, other): 
-		return isinstance(other, self.__class__) and self.fitness != other.fitness
+		return self.fitness != other.fitness
 
 	def __ge__(self, other): 
-		return isinstance(other, self.__class__) and self.fitness >= other.fitness
+		return self.fitness >= other.fitness
 
 	def __gt__(self, other): 
-		return isinstance(other, self.__class__) and self.fitness > other.fitness
+		return self.fitness > other.fitness

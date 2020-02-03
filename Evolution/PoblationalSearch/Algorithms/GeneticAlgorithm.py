@@ -47,12 +47,11 @@ class GeneticAlgorithm(PoblationalAlgorithm):
         return childs
 
     def replace(self, population, parents, childs):
+        #return childs
         pop = []
         for i in range(len(population)):
-            #print(childs[i].fitness, parents[i].fitness)
             if childs[i] <= parents[i]: 
                 pop.append(childs[i])
-                print('child is better')
             else: pop.append(parents[i])
         return pop
 

@@ -75,7 +75,8 @@ class CoEvolution():
             
             for i in range(len(self.algorithms)):
                 alg = self.algorithms[i]
-                alg.replace(alg.population, all_parents[i], all_childs[i])
+                new_p = alg.replace(alg.population, all_parents[i], all_childs[i])
+                alg.population = new_p
 
             self.evaluate_all()
             self.tracer.add(self.algorithms)

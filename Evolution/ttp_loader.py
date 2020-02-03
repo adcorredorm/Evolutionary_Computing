@@ -1,9 +1,11 @@
+import os
 import math
 
 class ttp_loader():
 
     def __init__(self, path):
-        file = open(path)
+        abs_path = os.path.dirname(os.path.abspath(__file__)) + '/'
+        file = open(abs_path + path)
         
         self.name = file.readline().strip().split('\t')[1]
         self.kp_type = file.readline().strip().split(':')[1].split(',')
