@@ -1,9 +1,11 @@
 import tsplib95
+import math
 
 # pylint: disable=import-error, no-name-in-module
 from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 from PoblationalSearch.Algorithms.EvolutionStrategie import EvolutionStrategie
 from PoblationalSearch.Algorithms.CoEvolution import CoEvolution
+from PoblationalSearch.Algorithms.MultiModal import MultiModal
 
 from PoblationalSearch.Agents.BinaryAgent import BinaryAgent
 from PoblationalSearch.Agents.RealAgent import RealAgent
@@ -144,5 +146,43 @@ Co_Evolution = {
     'alg_args': [test_co, test_co2]
 }
 
-coe = CoEvolution(**Co_Evolution).execute()
-print(*coe.get_best(), sep=' | ')
+#coe = CoEvolution(**Co_Evolution).execute()
+#print(*coe.get_best(), sep=' | ')
+
+def euclidean(A, B):
+    s = 0
+    for i in range(len(A)):
+        s += (A[i] - B[i])**2
+    return math.sqrt(s)
+
+mm = {
+    'function': rastrigin,
+    'ind_size': 2,
+    'p_size': 20,
+    'generations': 20,
+    'agent': RealAgent,
+    'selection_op': selection.matting_restriction(euclidean, 1),
+    'mutation_op': mutation.real_mutation(),
+    'crossover_op': crossover.simple_crossover(),
+    'distance': euclidean,
+    'radious': 1,
+    'agent_args': {
+        '_min': -5.12,
+        '_max': 5.12
+    }
+}
+
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits import mplot3d
+
+mm = MultiModal(**mm).execute()
+
+x = [v.genome[0] for v in mm.last_generation]
+y = [v.genome[1] for v in mm.last_generation]
+z = [v.fitness for v in mm.last_generation]
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+ax.scatter3D(x, y, z, 'gray')
+plt.show()

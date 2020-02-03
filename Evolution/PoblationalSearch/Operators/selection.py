@@ -48,3 +48,40 @@ class elitist_tournament(tournament_selection):
     
     def make_tournament(self, candidates):
         return sorted(candidates)[0]
+
+#Multimodal
+class matting_restriction(Operator):
+
+    def hamming_distance(self, A, B):
+        count = 0
+        for i in range(len(A)):
+            if A[i] != B[i]:
+                count += 1
+        return count
+    
+    def calculate_distances(self, agents):
+        distances = [[0]*len(agents) for _ in range(len(agents))]
+        for i in range(len(agents)):
+            for j in range(i+1, len(agents)):
+                d = self.distance(agents[i].genome, agents[j].genome)
+                distances[i][j] = d
+                distances[j][i] = d
+        return distances
+
+    def __init__(self, distance, radious, **kwargs):
+        super().__init__(**kwargs)
+        self.distance = distance
+        self.radious = radious
+
+    def apply(self, agents):
+        distances = self.calculate_distances(agents)
+        chosen = []
+        for i in range(len(agents)):
+            candidates = [j for j in range(len(agents))
+                    if i != j and distances[i][j] <= self.radious]
+            if len(candidates) > 0:
+                chosen.append(agents[sample(candidates, 1)[0]])
+            else:
+                chosen.append(agents[i])
+        return chosen
+        

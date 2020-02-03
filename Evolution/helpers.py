@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from mpl_toolkits import mplot3d
 
 def plot_stats(data):
     _min = []
@@ -36,3 +37,17 @@ def make_experiment(algorithm_class, algorithm_args, executions):
         stats.append(tracer.best_fit)
     plot_stats(stats)
     return (solutions, stats)
+
+def hamming_distance(A, B):
+    count = 0
+    for i in range(len(A)):
+        if A[i] != B[i]:
+            count += 1
+    return count
+
+from random import random
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+ax.scatter3D([int(random() * 50) for _ in range(20)],[int(random() * 50) for _ in range(20)],[random() * -10000 for _ in range(20)], 'gray')
+plt.show()
