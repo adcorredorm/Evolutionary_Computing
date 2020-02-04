@@ -6,11 +6,12 @@ from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 from PoblationalSearch.Algorithms.EvolutionStrategie import EvolutionStrategie
 from PoblationalSearch.Algorithms.CoEvolution import CoEvolution
 from PoblationalSearch.Algorithms.MultiModal import MultiModal
+from PoblationalSearch.Algorithms.MultiObjective import CoMultiObjective
 
 from PoblationalSearch.Agents.BinaryAgent import BinaryAgent
 from PoblationalSearch.Agents.RealAgent import RealAgent
 from PoblationalSearch.Agents.PermutationAgent import PermutationAgent
-from PoblationalSearch.Agents.CoAgent import KPCoAgent
+from PoblationalSearch.Agents.CoAgent import KPCoAgent, RealCoAgent
 
 from PoblationalSearch.Functions.Binary import max_one
 from PoblationalSearch.Functions.Real import ackley, michalewicz, rastrigin
@@ -155,7 +156,7 @@ def euclidean(A, B):
         s += (A[i] - B[i])**2
     return math.sqrt(s)
 
-mm = {
+multimod = {
     'function': rastrigin,
     'ind_size': 2,
     'p_size': 20,
@@ -176,7 +177,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits import mplot3d
 
-mm = MultiModal(**mm).execute()
+mm = MultiModal(**multimod).execute()
 
 x = [v.genome[0] for v in mm.last_generation]
 y = [v.genome[1] for v in mm.last_generation]
@@ -185,4 +186,50 @@ z = [v.fitness for v in mm.last_generation]
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.scatter3D(x, y, z, 'gray')
+plt.show()
+
+
+def surface_area(agent):
+    r, h = agent[0].genome[0], agent[0].genome[1]
+    return -(math.pi * r * math.sqrt(r**2 + h**2))
+
+def total_area(agent):
+    r = agent[0].genome[0]
+    return -((math.pi * r) * (r - surface_area(agent)))
+#These function aren't good choice for multiobjective
+MultiObj = {
+    'functions': [surface_area, total_area],
+    'generations': 30,
+    'algorithms': [MultiModal],
+    'alg_args': [{
+        'ind_size': 2,
+        'generations': 20,
+        'p_size': 20,
+        'agent': RealCoAgent,
+        'selection_op': selection.matting_restriction(euclidean, 1),
+        'mutation_op': mutation.real_mutation(),
+        'crossover_op': crossover.simple_crossover(),
+        'distance': euclidean,
+        'radious': 1,
+        'agent_args': {
+            '_min': 0,
+            '_max': 20
+        }
+    }]
+}
+
+mo = CoMultiObjective(**MultiObj).execute()
+
+x = [v.objectives[0] for v in mo.last_generations[0]]
+y = [v.objectives[1] for v in mo.last_generations[0]]
+
+for i in range(len(x)):
+    plt.plot(x[i], y[i], 'bo')
+
+paretto = [agent for agent in mo.last_generations[0] if agent.fitness == -20]
+px = [v.objectives[0] for v in paretto]
+py = [v.objectives[1] for v in paretto]
+for i in range(len(px)):
+    plt.plot(px[i], py[i], 'ro')
+
 plt.show()

@@ -1,8 +1,9 @@
 from abc import abstractmethod, ABCMeta
 from random import randint
 from .Agent import Agent
-from.BinaryAgent import BinaryAgent
+from .BinaryAgent import BinaryAgent
 from .PermutationAgent import PermutationAgent
+from .RealAgent import RealAgent
 
 class CoAgent(metaclass=ABCMeta):
 
@@ -60,3 +61,8 @@ class KPCoAgent(BinaryAgent, CoAgent):
 		for p_size in pop_sizes:
 			friend = randint(0, p_size - 1)
 			self.genome += KPCoAgent.number_to_bin(friend, self.bits)
+
+class RealCoAgent(RealAgent, CoAgent):
+	
+	def get_friends(self, populations):
+		return [self]
