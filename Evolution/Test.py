@@ -2,6 +2,7 @@ import tsplib95
 import math
 
 # pylint: disable=import-error, no-name-in-module
+from PoblationalSearch.Algorithms.HillClimb import HillClimb
 from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 from PoblationalSearch.Algorithms.EvolutionStrategie import EvolutionStrategie
 from PoblationalSearch.Algorithms.CoEvolution import CoEvolution
@@ -23,6 +24,18 @@ import PoblationalSearch.Operators.selection as selection
 
 p_size = 100
 generations = 100
+
+HillC = {
+    'function': max_one,
+    'ind_size': 100,
+    'p_size': p_size,
+    'generations': generations,
+    'agent': BinaryAgent,
+    'mutation_op': mutation.bin_mutation(),
+}
+
+hc = HillClimb(**HillC).execute()
+print(hc.best_ind[-1])
 
 binary_GA = {
     'function': max_one,
