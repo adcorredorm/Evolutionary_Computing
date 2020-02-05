@@ -1,3 +1,4 @@
+from copy import deepcopy
 from random import random, sample
 from .Algorithm import PoblationalAlgorithm
 
@@ -26,7 +27,8 @@ class HillClimb(PoblationalAlgorithm):
     def descendant(self, population, parents):
         childs = []
         for ind in population:
-            child = self.mutation_op.apply([ind])
+            copy = deepcopy(ind)
+            child = self.mutation_op.apply([copy])
             if not self.stationary:
                 self.evaluate(child)
             childs.extend(child)

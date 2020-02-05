@@ -1,0 +1,12 @@
+generations: 100
+population size: 20
+Best solution:
+-0.0006 0.0058 0.9785 1.0122 0.0102 0.0851 0.0285 -0.0475 -0.0056 0.0122 -0.0386 -0.0290 0.0235 -0.0120 0.0086 0.0346 0.0143 0.0169 0.0286 0.0070 | 5.2920 
+5.292002327405243
+Average: 15.6704	Std Deviation: 8.9865
+Median: 13.6117	Std Deviation: 9.2272
+Hill Climb
+Average: 164.2695	Std Deviation: 20.6900
+Median: 168.8914	Std Deviation: 21.2173
+Algorithm pass z test with 95% significance using average.
+Algorithm pass z test with 95% significance using median.

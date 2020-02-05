@@ -45,16 +45,19 @@ class perm_mutation(Operator):
     
 class flip_mutation(Operator):
 
-    def apply(self, agents):
+    def apply(self, agents, rate=-1):
         agent = agents[0]
+        rate = rate if rate >= 0 else 1/len(agent.genome)
         size = len(agent.genome)
-        p1, p2 = randint(0, size - 1), randint(0, size - 1)
-        p1, p2 = sorted([p1, p2])
-        n_gen = agent.genome[:p1]
-        n_gen += reversed(agent.genome[p1:p2])
-        n_gen += agent.genome[p2:]
-        agent.genome = n_gen
-        agent.fitness = None
+        for i in range(size):
+            if random() < rate:
+                j = randint(0, size - 1)
+                p1, p2 = sorted([i,j])
+                n_gen = agent.genome[:p1]
+                n_gen += reversed(agent.genome[p1:p2])
+                n_gen += agent.genome[p2:]
+                agent.genome = n_gen
+                agent.fitness = None
         return [agent]
 
 class e_strategy_mutation(Operator):

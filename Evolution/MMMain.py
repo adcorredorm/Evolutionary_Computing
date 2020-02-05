@@ -4,11 +4,11 @@ import PoblationalSearch.Operators.mutation as mutation
 import PoblationalSearch.Operators.selection as selection
 
 from PoblationalSearch.Agents.CoAgent import TSPCoAgent, KPCoAgent
-from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
+from PoblationalSearch.Algorithms.MultiModal import MultiModal
 from PoblationalSearch.Algorithms.CoEvolution import CoEvolution
 
 from ttp_loader import ttp_loader
-from helpers import make_experiment
+from helpers import make_experiment, hamming_distance
 
 problem = ttp_loader('TTP/eil51_n50_uncorr_01.ttp')
 
@@ -41,10 +41,11 @@ tsp = {
     'p_size': 64,
     'generations': 0,
     'agent': TSPCoAgent,
-    'selection_op': selection.elitist_tournament(),
+    'selection_op': selection.matting_restriction(hamming_distance, 2),
     'mutation_op': mutation.tsp_mutation(mutation.perm_mutation()),
-    'crossover_rate': 0.7,
-    'crossover_op': crossover.perm_crossover(problem.dimension)
+    'crossover_op': crossover.perm_crossover(problem.dimension),
+    'distance': hamming_distance,
+    'radious': 2
 }
 
 W = problem.capacity
@@ -55,21 +56,29 @@ kp = {
     'p_size': 64,
     'generations': 0,
     'agent': KPCoAgent,
-    'selection_op': selection.elitist_tournament(),
+    'selection_op': selection.matting_restriction(hamming_distance, 2),
     'mutation_op': mutation.kp_mutation(W, item_w, mutation.bin_mutation()),
-    'crossover_rate': 0.7,
-    'crossover_op': crossover.kp_crossover(W, item_w, crossover.simple_crossover())
+    'crossover_op': crossover.kp_crossover(W, item_w, crossover.simple_crossover()),
+    'distance': hamming_distance,
+    'radious': 2
 }
 
 ttp = {
     'function': ttp1,
-    'generations': 100,
-    'algorithms': [GeneticAlgorithm, GeneticAlgorithm],
+    'generations': 20,
+    'algorithms': [MultiModal, MultiModal],
     'alg_args': [tsp, kp]
 }
 
-#coe = CoEvolution(**ttp).execute()
+coe = CoEvolution(**ttp).execute()
+
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits import mplot3d
+
+
+
 #print(*coe.get_best(), sep='\n')
 
-res = make_experiment('TTP_eil51_n50_tournament2.txt', CoEvolution, ttp, 30)
+#res = make_experiment(CoEvolution, ttp, 3)
 #print(min(gen[-1] for gen in res[1]))

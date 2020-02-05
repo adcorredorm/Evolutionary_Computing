@@ -4,6 +4,7 @@ from .Agent import Agent
 class PermutationAgent(Agent):
 
     def init(self, size, **kwargs):
+        self.__dict__.update(kwargs)
         self.genome = [i for i in range(size)]
         shuffle(self.genome)
 
