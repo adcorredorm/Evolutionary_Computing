@@ -8,13 +8,13 @@ import PoblationalSearch.Operators.mutation as mutation
 import PoblationalSearch.Operators.selection as selection
 from helpers import make_experiment
 
-function = rastrigin
+function = ackley
 ind_size = 20
 p_size = 100
 generations = 100
 args = {
-    '_min': -5.12,
-    '_max': 5.12
+    '_min': -32.768,
+    '_max': 32.768
 }
 
 evolution_strategy = {
@@ -39,5 +39,18 @@ hc = {
     'agent_args': args,
 }
 
-res = make_experiment('ES_rastrigin20.txt',EvolutionStrategie, evolution_strategy, 30, hc)
+binary_GA = {
+    'function': function,
+    'ind_size': ind_size,
+    'p_size': p_size,
+    'generations': generations,
+    'agent': RealAgent,
+    'agent_args': args,
+    'selection_op': selection.tournament_selection(),
+    'mutation_op': mutation.real_mutation(),
+    'crossover_rate': 0.7,
+    'crossover_op': crossover.multipoint_crossover(1)
+}
+
+res = make_experiment('ESvsGA_ackley.txt',EvolutionStrategie, evolution_strategy, 30, binary_GA)
 print(min(gen[-1] for gen in res[1]))

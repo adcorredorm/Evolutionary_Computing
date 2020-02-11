@@ -4,6 +4,7 @@ import numpy as np
 from mpl_toolkits import mplot3d
 # pylint: disable=import-error
 from PoblationalSearch.Algorithms.HillClimb import HillClimb
+from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 
 def plot_stats(data, comparative=None):
     _min = []

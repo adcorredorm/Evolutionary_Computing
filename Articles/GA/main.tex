@@ -1,25 +1,29 @@
 \documentclass[twocolumn]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \begin{document}
-\title{Evolutionary Aproach to Traveling Salesman Problem}
+\title{Acercamiento a la Solucion del Agente Viajero con el uso de Algoritmos Genéticos}
 \author{Angel David Corredor}
 \date{}
 \maketitle
 
 \begin{abstract}
-    The paper presents a technique for solve the Traveling Salesman Problem using a modified Genetic Algorithm.
-    Then the experiments will be compared with traditional GA in some problems of TSPLibrary.     
+    El artículo presenta una técnica para resolver el problema clasico del Agente Viajero
+    (Traveling Salesman Problem) mediante algoritmos evolutivos. El algoritmo es aplicado en
+    algunos de los problemas incluidos en la TSPLibrary y sus resultados contrastados con el ya
+    popular algoritmo de Ascenso a la Colina.     
 \end{abstract}
 
-\section{Introduction}
+\section{Introducción}
 
-The travelling salesman problem is one of the classic NP-hard optimization problems.
-In this problem, there are $n$ cities and the distances between the cities are given by a 
-distance matrix $D=d_{ij}$ ($d_{ij}$ the distance between city $i$ and $j$).
-There is a salesman who must visit each city exactly once and minimize the time of the complete tour.
-It is assumed that the speed of the salesman is constant ($v_c$) and he tries to minimize
-the time of the tour. 
-The objective function is given by:
+El problema del agente viajero es uno de los los problemas clasicos de optimizacion NP-hard.
+En este problema se tienen $n$ ciudades y las distancias entre ellas estan dadas por una matriz
+$D=d_{ij}$ ($d_{ij}$, la distancia entre las ciudades $i$ y $j$).
+Tenemos un vendedor que debe visitar cada una de las ciudades exactamente una vez. Se asume que 
+su velocidad de desplazamiento es constante ($v_c$) e intenta minimizar el tiempo que toma completar
+el tour.
+La funcion objectivo se define entonces como:
 
 \begin{equation}
     f(\bar{x}) =
@@ -28,22 +32,122 @@ The objective function is given by:
     \bar{x}=(x_1,...,x_n)
 \end{equation}
 
-where $\bar{x}$ represents a tour, which contains all of the cities exactly once, 
-$t_{x_i,x_{i+1}}$ is the time of the travel between $x_i$ and $x_{i+1}$ and it is calculated by:
+donde $\bar{x}$ representa un tour, el cual contiene cada una de las ciudades exactamente una vez
+y $t_{x_i,x_{i+1}}$ es el tiempo de viaje entre $x_i$ y $x_{i+1}$ el cual se calcula como:
 
 \begin{equation}
     t_{x_i,x_{i+1}} =
     \frac{d_{x_i,x_{i+1}}}{v_c}
 \end{equation}
 
-Clearly, $f$ is the total time of the tour. The aim is to find $x$ which minimizes $f$. 
+Claramente, $f$ es el tiempo total que toma completar el tour.
+El objetivo es entonces encontrar el $\bar{x}$ que minimiza $f$. 
 
-\section{INdividual representation}
+\section{Representacion y Operadores}
 
-The encoding of each individual is a permutation of $n$ elements called tour,
-this represents the order in which the traveler visit the cities.
+De manera tradicional los individuos para TSP son representados como una permutación de $n$
+elementos llamado tour, la cual representa el orden en el que el vendedor debe visitar
+cada una de las ciudades.
+
+Una vez definida una representación adecuada, se proceden a elegir los operadores geneticos que
+serán usados sobre estos individuos, los cuales son:
+
+\subsection{Mutación}
+La mutación es un operador unario el cual modifica una parte del código genetico, el operador
+seleccionado hace una inversion de una seccion del genoma, como se describe a continuación:
+
+
+\subsection{Cruce}
+El cruce es un operador binario el cual toma 2 individuos que se tomarán como "padres" y combina su
+genoma de manera que se obtienen 2 nuevos individuos "hijos". El operador usado toma una sección del
+código genetico de uno de los padres para posteriormente completar el nuevo tour teniendo en cuanta
+el orden presentado por el otro padre, el segundo hio se construye de manera similar pero usando el 
+otro padre para la operacion. El algoritmo se describe a continuación:
+
+\section{Algoritmo Propuesto}
+El algoritmo que se propone para la resolución del problema del Agente Viajero es un Algoritmo
+Genético de estado estable que hace uso de los operadores previamente expuestos,
+la forma general de este algoritmo es:
+
+
+
+Este algoritmo al ser de estado estable asegura que se mantiene la mejor solución hallada a travez
+de las generaciones sin embargo los operadores presentados en la sección previa permiten hacer una
+exploración mas amplia del espacio de busqueda.
+
+\section{Resultados}
+
+Para los experimentos se usaron los problemas bays29, eil51, d198 y fl1400 de la TSPLib,
+posteriormente se compara el rendimiento estadistico de la técnica comparada con Ascenso a 
+la colina el cual implementa unicamente mismo el operador de mutación.
+Para cada experimento se hicieron 30 ejecuciones independientes del algoritmo, 
+contando cada una de ellas con 100 generaciones de 100 individuos cada una.
+El código usado se puede encontar en
+
+Los resultados obtenidos fueron:
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{1\linewidth}
+        \includegraphics[width=\linewidth]{figures/tsp29.png}
+        \caption{Resultados bays29}
+    \end{subfigure}
+    \begin{subfigure}[b]{1\linewidth}
+        \includegraphics[width=\linewidth]{figures/tsp_51.png}
+        \caption{Resultados eil51}
+    \end{subfigure}
+    \begin{subfigure}[b]{1\linewidth}
+        \includegraphics[width=\linewidth]{figures/tspd198.png}
+        \caption{Resultados d198}
+    \end{subfigure}
+    \caption{Resultados Algoritmo Genetico V.S Ascenso a la Colina}
+\end{figure}
+
+\begin{table}[htpb]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    Problema & $\bar{x}$ & $\sigma_{\bar{x}}$ & mediana & $\sigma_{med}$ \\
+    \hline
+    bays29 & 2481.7 & 135.437 & 2472.5 & 135.7599 \\
+    \hline
+    eil51 & 684.4 & 43.9526 & 684.5 & 43.9528 \\
+    \hline
+    d198 & 73410.8667 & 3899.324 & 72993.5 & 3922.3628 \\
+    \hline
+    fl1400 & & & & \\
+    \hline
+\end{tabular}
+\caption{Resumen estadistico algoritmo genético por problema}
+\label{table:results_ga}
+\end{table}
+
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Problema & $\bar{x}$ & $\sigma_{\bar{x}}$ & mediana & $\sigma_{med}$ \\
+        \hline
+        bays29 & 3320.1 & 131.7648 & 3349.5 & 135.1152 \\
+        \hline
+        eil51 & 1077.1667 & 30.2405 & 1071.5 & 30.7848 \\
+        \hline
+        d198 & 150738.8 & 3776.984 & 151105 & 3795.3043 \\
+        \hline
+        fl1400 & & & & \\
+        \hline
+    \end{tabular}
+    \caption{Resumen estadistico ascenso a la colina por problema}
+    \label{table:results_hc}
+    \end{table}
 
 \section{Conclutions}
+
+Como se puede observar en la tabla \ref{table:results_ga} y \ref{table:results_hc}, el algoritmo
+genetico supera ampliamente al ascenso a la colina, lo cual se puede comprobar rapidamente 
+haciendo una prueba de hipotesis sobre los valores de la media o la mediana de ambos algoritmos.
+Por tanto el algoritmo genetico aqui propuesto es viable para dar solucion al problema del
+agente viajero.
 
 %\begin{thebibliography}{X}
     %Main https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf (este da una proposicion mejor de multiobjetivo)

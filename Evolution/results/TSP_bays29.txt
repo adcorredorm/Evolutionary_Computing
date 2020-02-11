@@ -1,0 +1,12 @@
+generations: 100
+population size: 29
+Best solution:
+[26,20,1,2,28,25,4,8,5,11,0,27,7,12,9,19,3,14,17,16,13,21,10,18,24,6,22,23,15] 2261.00
+2261
+Average: 2481.7000	Std Deviation: 135.4370
+Median: 2472.5000	Std Deviation: 135.7599
+Hill Climb
+Average: 3320.1000	Std Deviation: 131.7648
+Median: 3349.5000	Std Deviation: 135.1152
+Algorithm pass z test with 95% significance using average.
+Algorithm pass z test with 95% significance using median.

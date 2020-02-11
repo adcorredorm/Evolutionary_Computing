@@ -8,7 +8,7 @@ from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 from PoblationalSearch.Agents.PermutationAgent import PermutationAgent
 from helpers import make_experiment
 
-tsp_path = os.path.dirname(os.path.abspath(__file__)) + '/TSP/eil51.tsp'
+tsp_path = os.path.dirname(os.path.abspath(__file__)) + '/TSP/fl1400.tsp'
 tsp_problem = tsplib95.load_problem(tsp_path)
 def tsp(genome):
     count = 0
@@ -40,5 +40,5 @@ hc = {
     'mutation_op': mutation.flip_mutation(),
 }
 
-res = make_experiment('TSP_eil51.txt',GeneticAlgorithm, tsp_GA, 30, hc)
+res = make_experiment('TSP_fl1400.txt',GeneticAlgorithm, tsp_GA, 30, hc)
 print(min(gen[-1] for gen in res[1]))
