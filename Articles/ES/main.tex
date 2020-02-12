@@ -1,6 +1,7 @@
 \documentclass[twocolumn]{IEEEtran}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \begin{document}
 \title{Solucion a Problemas Multidimensionales usando Estartegias Evolutivas}
@@ -20,7 +21,7 @@
 Con la evolución de la computación han surgido nuevas estrategias para abordar antiguos problemas
 inabordables para calculos a mano, uno de ellos es la optimización de reales en espacios 
 multidimensionales. Una de las primeras técnicas en abordar este problema en especifico fueron
-las estrategias evolutivas %(inserte aqui referencia)
+las estrategias evolutivas [1],
 las cuales debido al manejo de parametros especificos guian de mejor manera el proceso evolutivo
 y en consecuencia el de optimización.
 
@@ -63,7 +64,7 @@ cuenta ademas con un cruce simple. \\
 A cada algoritmo se le mide el rendimiento estadistico y se hace una comparación entre estas medidas.
 Para cada experimento se hicieron 30 ejecuciones independientes, 
 contando cada una de ellas con 100 generaciones de 100 individuos cada una.
-El código usado se puede encontar en
+El código usado se puede encontar en \url{https://github.com/adcorredorm/Evolutionary_Computing}.
 
 Los resultados obtenidos fueron:
 
@@ -157,13 +158,8 @@ Con esto, la estragia evolutiva demuestra ser mejor que los otros algoritmos cua
 problemas con números reales en espacios multidimensionales, demostrando ser una de las tecnicas
 mas solidas en este proposito dentro de los algoritmos evolutivos.
 
-%\begin{thebibliography}{X}
-    %Main https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf (este da una proposicion mejor de multiobjetivo)
-    
-    %%Instancias del problema https://cs.adelaide.edu.au/~optlog/CEC2014COMP_InstancesNew/
-    %%Benchmark https://cs.adelaide.edu.au/~ec/research/ttp/2014gecco-ttp.pdf
-    %%BO-TTP https://cs.adelaide.edu.au/~markus/pub/2018gecco-emottp.pdf
-    %%Mas cosas https://cs.adelaide.edu.au/~ec/research/combinatorial.php   
-%\end{thebibliography}
+\begin{thebibliography}{X}
+    \item Back, Hoffmeister, Schwefel. A survey of Evolution strategies.
+\end{thebibliography}
 
 \end{document}
