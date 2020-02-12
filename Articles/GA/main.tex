@@ -1,6 +1,7 @@
 \documentclass[twocolumn]{IEEEtran}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \begin{document}
 \title{Acercamiento a la Solucion del Agente Viajero con el uso de Algoritmos Genéticos}
@@ -54,35 +55,38 @@ serán usados sobre estos individuos, los cuales son:
 
 \subsection{Mutación}
 La mutación es un operador unario el cual modifica una parte del código genetico, el operador
-seleccionado hace una inversion de una seccion del genoma, como se describe a continuación:
-
+seleccionado toma aleatoriamente 2 elementos del genoma y los intercambia, manteniendo de esta
+forma una permutación valida. 
 
 \subsection{Cruce}
-El cruce es un operador binario el cual toma 2 individuos que se tomarán como "padres" y combina su
-genoma de manera que se obtienen 2 nuevos individuos "hijos". El operador usado toma una sección del
-código genetico de uno de los padres para posteriormente completar el nuevo tour teniendo en cuanta
-el orden presentado por el otro padre, el segundo hio se construye de manera similar pero usando el 
-otro padre para la operacion. El algoritmo se describe a continuación:
+El cruce es un operador binario el cual utiliza 2 individuos que se toman el rol de "padres",
+los cuales combinan su genoma de manera que se obtienen 2 nuevos individuos "hijos".
+El operador usado selecciona una posicion aleatoria del genoma de un copiando los elementos 
+a uno de los hijos, los elementos que hacen falta para completar el tour se toman 
+del otro padre segun el orden que tengan en el genoma de este. D esta forma se preserva parte de
+la nformación de ambos caminos. Para el segundo hijo se procede de igual manera pero cambiando
+el orden de los padres.
 
 \section{Algoritmo Propuesto}
-El algoritmo que se propone para la resolución del problema del Agente Viajero es un Algoritmo
-Genético de estado estable que hace uso de los operadores previamente expuestos,
-la forma general de este algoritmo es:
 
-
+El algoritmo usado para la resolución del problema del Agente Viajero es un Algoritmo Genético
+de estado estable con una selección de padres uniforme y una probabilidad de cruce de 0.7 
+por cada pareja de padres. Como operadores de mutación y cruce se utilizan los anteriormente expuestos.
 
 Este algoritmo al ser de estado estable asegura que se mantiene la mejor solución hallada a travez
-de las generaciones sin embargo los operadores presentados en la sección previa permiten hacer una
+de las generaciones a la vez que los operadores presentados en la sección previa permiten hacer una
 exploración mas amplia del espacio de busqueda.
 
 \section{Resultados}
 
-Para los experimentos se usaron los problemas bays29, eil51, d198 y fl1400 de la TSPLib,
+Para los experimentos se usaron los problemas bays29, eil51 y d198 de la TSPLib,
 posteriormente se compara el rendimiento estadistico de la técnica comparada con Ascenso a 
-la colina el cual implementa unicamente mismo el operador de mutación.
+la Colina Paralelo el cual implementa unicamente mismo el operador de mutación.
 Para cada experimento se hicieron 30 ejecuciones independientes del algoritmo, 
 contando cada una de ellas con 100 generaciones de 100 individuos cada una.
-El código usado se puede encontar en
+\\
+El código empleado se puede encontar en \url{https://github.com/adcorredorm/Evolutionary_Computing}
+\\
 
 Los resultados obtenidos fueron:
 
@@ -115,8 +119,6 @@ Los resultados obtenidos fueron:
     \hline
     d198 & 73410.8667 & 3899.324 & 72993.5 & 3922.3628 \\
     \hline
-    fl1400 & & & & \\
-    \hline
 \end{tabular}
 \caption{Resumen estadistico algoritmo genético por problema}
 \label{table:results_ga}
@@ -134,14 +136,12 @@ Los resultados obtenidos fueron:
         \hline
         d198 & 150738.8 & 3776.984 & 151105 & 3795.3043 \\
         \hline
-        fl1400 & & & & \\
-        \hline
     \end{tabular}
     \caption{Resumen estadistico ascenso a la colina por problema}
     \label{table:results_hc}
     \end{table}
 
-\section{Conclutions}
+\section{Conclusiones}
 
 Como se puede observar en la tabla \ref{table:results_ga} y \ref{table:results_hc}, el algoritmo
 genetico supera ampliamente al ascenso a la colina, lo cual se puede comprobar rapidamente 
@@ -149,13 +149,13 @@ haciendo una prueba de hipotesis sobre los valores de la media o la mediana de a
 Por tanto el algoritmo genetico aqui propuesto es viable para dar solucion al problema del
 agente viajero.
 
-%\begin{thebibliography}{X}
-    %Main https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf (este da una proposicion mejor de multiobjetivo)
-    
-    %%Instancias del problema https://cs.adelaide.edu.au/~optlog/CEC2014COMP_InstancesNew/
-    %%Benchmark https://cs.adelaide.edu.au/~ec/research/ttp/2014gecco-ttp.pdf
-    %%BO-TTP https://cs.adelaide.edu.au/~markus/pub/2018gecco-emottp.pdf
-    %%Mas cosas https://cs.adelaide.edu.au/~ec/research/combinatorial.php   
-%\end{thebibliography}
+\begin{thebibliography}{X}
+    \item Bonyadi, Michalewicz, Barone. The travelling thief problem: the first step in the
+    transition from theoretical problems to realistic problems. \url{https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf}  
+    \item TSPLib. Travelling Salesman Problem Instances and best known solutions.
+    \url{http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsplib.html}
+    \item Rodriguez, Gomez. Solución de problemas tipo Flow-Shop mediante algoritmos evolutivos.
+    \url {http://bdigital.unal.edu.co/12916/}
+\end{thebibliography}
 
 \end{document}
