@@ -1,6 +1,7 @@
 \documentclass[twocolumn]{IEEEtran}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \begin{document}
 \title{Enfoque CoEvolutivo al problema del Ladron Viajero}
@@ -149,7 +150,8 @@ Partiendo de la definición de la función objetivo se configuran 2 algoritmos g
 independientes que evolucionan ambas poblaciones y se realizan cambios sobre el operador de
 selección de padres para poder evaluar los cambios que esto conduce sobre los resultados obtenidos.
 
-Se realizan entonces 2 experiementos contando cada uno de estos con 30 ejecuciones de los
+Se realizan entonces 2 experiementos en 2 instancias del problema TTP (eil51 n50 y eil76 n75),
+contando cada uno de estos con 30 ejecuciones de los
 algoritmos conjuntos, cada una de ellas con 100 generaciones de 100 individuos
 (por población) cada una.
 
@@ -166,7 +168,9 @@ y la tabla \ref{table:results_rand}:
         \hline
         Problema & $\bar{x}$ & $\sigma_{\bar{x}}$ & mediana & $\sigma_{med}$ \\
         \hline
-        eli51 n50 & -633926.81 & 1191789.64 & -239351.74 & 1257545.48 \\
+        eil51 n50 & -633926.81 & 1191789.64 & -239351.74 & 1257545.48 \\
+        \hline
+        eil76 n75 & -519887.5124 & 303620.9418 & -497407.7530 & 304544.1917 \\
         \hline
     \end{tabular}
     \caption{Resumen estadistico selección uniforme}
@@ -180,6 +184,13 @@ y la tabla \ref{table:results_rand}:
     \label{figure:51_random}
 \end{figure}
 
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=\linewidth]{figures/ttp_eil76_random.png}
+    \caption{Resultados obtenidos en eil76\_n75}
+    \label{figure:76_random}
+\end{figure}
+
 \subsection{Seleccion por Torneo}
 En vista de la variabilidad de los resultados se usa un operador que  ejerce mayor presión
 a las poblaciones para forzarlas a mantener las buenas parejas, los resultados obtenidos se 
@@ -191,7 +202,9 @@ observan en la figura \ref{figure:51_torneum} y a tabla \ref{table:results_t}:
         \hline
         Problema & $\bar{x}$ & $\sigma_{\bar{x}}$ & mediana & $\sigma_{med}$ \\
         \hline
-        eli51 n50 & -375814.18 & 253414.55 & -268596.97 & 275881.97 \\
+        eil51 n50 & -375814.18 & 253414.55 & -268596.97 & 275881.97 \\
+        \hline
+        eil76 n75 & -698416.9233 & 943446.0945 & -329127.2032 & 1029834.5280 \\
         \hline
     \end{tabular}
     \caption{Resumen estadistico selección por torneo}
@@ -205,8 +218,16 @@ observan en la figura \ref{figure:51_torneum} y a tabla \ref{table:results_t}:
     \label{figure:51_torneum}
 \end{figure}
 
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=\linewidth]{figures/ttp_eil76_tournament.png}
+    \caption{Resultados obtenidos en eil76\_n75}
+    \label{figure:76_torneum}
+\end{figure}
+
 De estos experimentos se puede evidenciar que al ejercer menos presion selectiva se obtienen
-malos resultados en promedio, como se ve en la figura \ref{figure:51_random}, sin embargo las 
+malos resultados en promedio, como se ve en las figuras \ref{figure:51_random} y \ref{figure:76_random}
+, sin embargo las 
 buenas soluciones son mucho mejores que las mejores soluciones resultantes de aplicar mayor,
 presión. Sin embargo al hacer esto se obtiene una mayor consistencia en los resultados y un 
 mejor resultado medio.
@@ -219,13 +240,16 @@ posible intentar ejercer mayor control sobre el cambio de amigo para poder mante
 consistencia en el rendimeinto de cada agente.
 
 
-%\begin{thebibliography}{X}
-    %Main https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf (este da una proposicion mejor de multiobjetivo)
-    
-    %%Instancias del problema https://cs.adelaide.edu.au/~optlog/CEC2014COMP_InstancesNew/
-    %%Benchmark https://cs.adelaide.edu.au/~ec/research/ttp/2014gecco-ttp.pdf
-    %%BO-TTP https://cs.adelaide.edu.au/~markus/pub/2018gecco-emottp.pdf
-    %%Mas cosas https://cs.adelaide.edu.au/~ec/research/combinatorial.php   
-%\end{thebibliography}
+\begin{thebibliography}{X}
+    \item Bonyadi, Michalewicz, Barone. The travelling thief problem: the first step in the
+    transition from theoretical problems to realistic problems. \url{https://cs.adelaide.edu.au/~zbyszek/Papers/TTP.pdf}  
+    \item Gomez, Garcia, Silva. COFRE: A FUZZY RULE COEVOLUTIONARY APPROACH FOR 
+    MULTICLASS CLASSIFICATION PROBLEMS. \url{http://www.dis.unal.edu.co/~jgomezpe/docs/papers/cofre.pdf}
+    \item Rodriguez, Gomez. Solución de problemas tipo Flow-Shop mediante algoritmos evolutivos.
+    \url {http://bdigital.unal.edu.co/12916/}
+    \item TTP problem instances. \url{https://cs.adelaide.edu.au/~optlog/CEC2014COMP_InstancesNew/}
+    \item Wu, Polyakovhyi, Wawner, Newman. Evolutionary Computation plus Dynamic Programming for the
+    Bi-Objective Travelling Thief Problem. \url{https://cs.adelaide.edu.au/~markus/pub/2018gecco-emottp.pdf}   
+\end{thebibliography}
 
 \end{document}

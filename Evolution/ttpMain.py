@@ -71,5 +71,5 @@ ttp = {
 #coe = CoEvolution(**ttp).execute()
 #print(*coe.get_best(), sep='\n')
 
-res = make_experiment('eil76_n75_random.txt', CoEvolution, ttp, 30)
+res = make_experiment('eil76_n75_tournament.txt', CoEvolution, ttp, 5)
 #print(min(gen[-1] for gen in res[1]))
