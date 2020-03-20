@@ -6,7 +6,7 @@ from mpl_toolkits import mplot3d
 from PoblationalSearch.Algorithms.HillClimb import HillClimb
 from PoblationalSearch.Algorithms.GeneticAlgorithm import GeneticAlgorithm
 
-def plot_stats(data, comparative=None):
+def plot_stats(data, filename, comparative=None):
     _min = []
     _max = []
     avg = []
@@ -36,7 +36,7 @@ def plot_stats(data, comparative=None):
         plt.plot(comp, label='Hill Climb', linestyle='--')
 
     plt.legend()
-    plt.show()
+    plt.savefig(os.path.dirname(os.path.abspath(__file__)) + '/results/' + filename)
 
 def make_experiment(filename, algorithm_class, algorithm_args, executions, hc_args=None):
     stats = []
@@ -54,8 +54,8 @@ def make_experiment(filename, algorithm_class, algorithm_args, executions, hc_ar
         make_resume(filename, algorithm_args, solutions, stats, comparative)
         plot_stats(stats, comparative)
     else:
-        make_resume(filename, algorithm_args, solutions, stats)
-        plot_stats(stats)
+        make_resume(filename + '.txt', algorithm_args, solutions, stats)
+        plot_stats(stats, filename + '.png')
     return (solutions, stats)
 
 def make_resume(filename, args, solutions, data, comparative=None):
@@ -76,13 +76,17 @@ def make_resume(filename, args, solutions, data, comparative=None):
             f.write('Objectives:\n')
             for obj in solutions[-1].objectives:
                 f.write(obj + '\n')
-        last_gen = np.transpose(data)[-1]
+        generations = np.transpose(data)
+        last_gen = generations[-1]
         avg = np.average(last_gen)
         med = np.median(last_gen)
         std_avg = np.sqrt(sum([(x_i - avg)**2 for x_i in last_gen]) / (len(last_gen) - 1))
         std_med = np.sqrt(sum([(x_i - med)**2 for x_i in last_gen]) / (len(last_gen) - 1))
-        f.write('Average: {:0.4f}\tStd Deviation: {:0.4f}\n'.format(avg, std_avg))
-        f.write('Median: {:0.4f}\tStd Deviation: {:0.4f}\n'.format(med, std_med))
+        f.write('Average: {:0.6f}\tStd Deviation: {:0.6f}\n'.format(avg, std_avg))
+        f.write('Median: {:0.6f}\tStd Deviation: {:0.6f}\n'.format(med, std_med))
+
+        for i in range(len(generations)):
+            f.write('Generation #{}:\t{:0.6f}\n'.format(i, min(generations[i])))
 
         if comparative is not None:
             last_gen_hc = np.transpose(comparative)[-1]

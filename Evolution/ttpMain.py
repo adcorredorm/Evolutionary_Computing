@@ -10,7 +10,11 @@ from PoblationalSearch.Algorithms.CoEvolution import CoEvolution
 from ttp_loader import ttp_loader
 from helpers import make_experiment
 
-problem = ttp_loader('TTP/eil76_n75_uncorr_01.ttp')
+import sys
+
+filename = sys.argv[1]
+
+problem = ttp_loader('TTP/{}.ttp'.format(filename))
 
 def ttp1(agents):
     tsp_id = 0 if agents[0].__class__ == TSPCoAgent else 1
@@ -41,7 +45,7 @@ tsp = {
     'p_size': 64,
     'generations': 0,
     'agent': TSPCoAgent,
-    'selection_op': selection.random_selection(),
+    'selection_op': selection.elitist_tournament(),
     'mutation_op': mutation.tsp_mutation(mutation.perm_mutation()),
     'crossover_rate': 0.7,
     'crossover_op': crossover.perm_crossover(problem.dimension)
@@ -55,7 +59,7 @@ kp = {
     'p_size': 64,
     'generations': 0,
     'agent': KPCoAgent,
-    'selection_op': selection.random_selection(),
+    'selection_op': selection.elitist_tournament(),
     'mutation_op': mutation.kp_mutation(W, item_w, mutation.bin_mutation()),
     'crossover_rate': 0.7,
     'crossover_op': crossover.kp_crossover(W, item_w, crossover.simple_crossover())
@@ -63,7 +67,7 @@ kp = {
 
 ttp = {
     'function': ttp1,
-    'generations': 100,
+    'generations': 1000,
     'algorithms': [GeneticAlgorithm, GeneticAlgorithm],
     'alg_args': [tsp, kp]
 }
@@ -71,5 +75,5 @@ ttp = {
 #coe = CoEvolution(**ttp).execute()
 #print(*coe.get_best(), sep='\n')
 
-res = make_experiment('eil76_n75_tournament.txt', CoEvolution, ttp, 5)
+res = make_experiment(filename, CoEvolution, ttp, 30)
 #print(min(gen[-1] for gen in res[1]))

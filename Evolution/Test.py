@@ -34,8 +34,8 @@ HillC = {
     'mutation_op': mutation.bin_mutation(),
 }
 
-hc = HillClimb(**HillC).execute()
-print(hc.best_ind[-1])
+#hc = HillClimb(**HillC).execute()
+#print(hc.best_ind[-1])
 
 binary_GA = {
     'function': max_one,
@@ -198,7 +198,27 @@ z = [v.fitness for v in mm.last_generation]
 
 fig = plt.figure()
 ax = plt.axes(projection='3d')
-ax.scatter3D(x, y, z, 'gray')
+ax.scatter3D(x, y, z, c='red')
+#plt.show()
+
+def rast(x, y):
+    return 20 + (x**2 - 10*np.cos(2*np.pi*x)) + (y**2 - 10*np.cos(2*np.pi*y))
+
+def f(x, y):
+    return np.sin(np.sqrt(x ** 2 + y ** 2))
+
+x = np.linspace(-6, 6, 30)
+y = np.linspace(-6, 6, 30)
+
+X, Y = np.meshgrid(x, y)
+Z = rast(X, Y)
+
+#fig = plt.figure()
+#ax = plt.axes(projection='3d')
+ax.contour3D(X, Y, Z, 50, cmap='binary')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
 plt.show()
 
 

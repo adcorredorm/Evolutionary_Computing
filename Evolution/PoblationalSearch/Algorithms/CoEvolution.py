@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 class CoEvolution():
 
     def __init__(self, function, generations, algorithms, alg_args, **kwargs):
@@ -51,10 +53,11 @@ class CoEvolution():
                 agent.fitness = self.function(friends)
 
     def stop(self, populations, k):
-        return self.generations <= k
+        return self.generations <= k or datetime.now() >= self.time + timedelta(minutes=10)
     
     def execute(self):
         k = 0
+        self.time = datetime.now()
         while not self.stop(self.algorithms, k):
             all_parents = []
             all_childs = []
